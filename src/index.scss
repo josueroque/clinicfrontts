@@ -1,0 +1,204 @@
+@import "reset";
+
+$primary: purple;
+$secondary: green;
+
+body {
+  background-color: $primary;
+}
+
+.Form-General {
+  margin-left: 12vw;
+  margin-top: 3vw;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.Form {
+  margin-left: 30vw;
+  margin-top: 1vw;
+}
+
+h1 {
+  margin-top: 1vw !important;
+  text-align: center;
+}
+
+.FormText {
+  margin-top: 0.5vw !important;
+}
+
+.RadioLabel {
+  margin-top: 0.5vw !important;
+}
+
+.RadioSocialSec {
+  width: 50% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 2vw !important;
+}
+
+.centerButton {
+  margin-top: 2vw !important;
+  width: 10vw !important;
+  margin-left: 25vw !important;
+  //   display: inline !important;
+}
+
+.Loader {
+  margin-left: 48vw;
+  margin-top: 5vw;
+}
+
+.Container-Home {
+  position: relative;
+  margin-top: 5vw !important;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+}
+.Link {
+  text-decoration: none;
+  color: #f1f1f1;
+}
+.AppBar {
+  margin-top: -3vw !important;
+  text-align: center;
+}
+.History {
+  display: grid 1fr 1fr;
+}
+.ContainerHistory {
+  display: grid !important ;
+  grid-template-columns: 0.33fr 0.33fr 0.33fr;
+}
+
+h3 {
+  text-align: center;
+  color: $primary;
+}
+.FormNumber {
+  width: 20vw;
+}
+.CenteredCheck {
+  margin-right: 38vw !important;
+}
+.HistoryButton {
+  width: 15vw;
+  margin-left: 1vw !important;
+}
+
+.HistoryTitle {
+  margin-top: 6vw !important;
+  color: $primary;
+}
+
+.RadioCondition {
+  width: 50% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.Link {
+  text-decoration: none;
+  color: #f1f1f1;
+}
+
+.Link-menu {
+  text-decoration: none;
+}
+
+.SearchText {
+  display: block !important;
+}
+
+.SearchTitle {
+  text-align: center;
+  margin-top: 5vw !important;
+  margin-left: 25vw !important;
+}
+
+.searchButton {
+  margin-top: 2vw !important;
+  width: 10vw;
+  margin-left: 0vw !important;
+}
+
+.loginContainer {
+  margin-top: 15vw;
+  width: 50% !important;
+}
+
+button.login {
+  background-color: #4caf50;
+  color: white;
+
+  margin-top: 5vw;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+h1.login {
+  margin-top: 4vw;
+  text-align: center;
+  color: $primary;
+}
+
+.centerButton.login {
+  margin-top: 2vw !important;
+  width: 10vw !important;
+  margin-left: 0vw !important;
+  background-color: $primary !important;
+  //   display: inline !important;
+}
+
+.loginMenu {
+  margin-left: 1.5vw;
+}
+
+.HomeImage {
+  margin-left: 15vw;
+  margin-top: 5vw;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.FormTextGeneral {
+  margin-top: 0.5vw !important;
+  width: 25vw;
+  display: block;
+  margin-left: 5vw !important;
+}
+.ListInfo {
+  margin-top: 1.5vw !important;
+  margin-bottom: 1.5vw !important;
+}
+
+.ListLabel {
+  margin-top: -0.5vw;
+  width: 25vw;
+  display: block;
+  margin-left: 5vw !important;
+}
+
+.Link > .HistoryButton {
+  margin-right: 1vw !important;
+}
+
+.FormTextGeneral > #clinicalProfile {
+  width: 60vw !important;
+  margin-left: 15vw !important;
+  display: block !important;
+}
+
+.Obstetrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10vw;
+  margin-left: 10vw !important;
+  border-style: dotted;
+  border-color: black;
+  z-index: 1000;
+}
