@@ -422,10 +422,11 @@ function TabPanel(props: TabPanelProps) {
         </Container>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Container className="Obstetrics">
-              <FormGroup className="Form">
-              
-                      <FormControl > 
+      
+
+              <FormGroup >
+              <Container className="Obstetrics">
+                      <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
                             className="FormNumber"
@@ -437,8 +438,8 @@ function TabPanel(props: TabPanelProps) {
                           />
                     </FormControl> 
                  
-
-                    <FormControl > 
+         
+                    <FormControl className="Form-Obstetrics"> 
                           
                           <TextField 
                             type="number" 
@@ -450,13 +451,22 @@ function TabPanel(props: TabPanelProps) {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {updateAbortions(parseInt(e.target.value))}}
                           />
                     </FormControl> 
-                    <FormControlLabel
-                        control={<Checkbox checked={spontaneousConsecutive} onChange={e=>{updateSpontaneousConsecutive(e.target.checked)}}  />}
-                        label="3 Spontaneous Consecutive"
-                        labelPlacement="start"
-                        className="CenteredCheck"
-                      /> 
-                    <FormControl > 
+                    <FormControl className="Form-Obstetrics Form-Obstetrics-Spontaneous">
+                      <FormLabel className="RadioLabel" component="legend">Spontaneous Consecutive</FormLabel>
+                        <RadioGroup 
+                          className="RadioCondition"
+                          aria-label="socialSec" 
+                          name="spontaneousConsecutive"
+                          value={spontaneousConsecutive}
+                          onChange={e=>{updateSpontaneousConsecutive(Boolean (e.target.value))}}
+                        >
+                          <FormControlLabel   control={<Radio value = 'true' />} label="Yes" />
+                          <FormControlLabel  control={<Radio value = 'false' />} label="No" />
+                        </RadioGroup>
+                    </FormControl>
+
+                      
+                    <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
                             className="FormNumber"
@@ -467,7 +477,7 @@ function TabPanel(props: TabPanelProps) {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateDeliveries(parseInt(e.target.value))}}
                           />
                     </FormControl> 
-                    <FormControl > 
+                    <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
                             className="FormNumber"
@@ -478,7 +488,7 @@ function TabPanel(props: TabPanelProps) {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updatePreviousWeight (parseInt(e.target.value))}}
                           />
                     </FormControl> 
-                    <FormControl > 
+                    <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
                             className="FormNumber"
@@ -489,7 +499,7 @@ function TabPanel(props: TabPanelProps) {
                             onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{updateVaginal(parseInt(e.target.value))}}
                           />
                     </FormControl> 
-                    <FormControl > 
+                    <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
                             className="FormNumber"
@@ -502,7 +512,7 @@ function TabPanel(props: TabPanelProps) {
                     </FormControl> 
         
 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics"> 
                       <TextField 
                         type="number" 
                         className="FormNumber"
@@ -513,7 +523,7 @@ function TabPanel(props: TabPanelProps) {
                         onChange={(e : React.ChangeEvent<HTMLInputElement>)=>{updateBornDead(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics"> 
                       <TextField 
                         type="number" 
                         className="FormNumber"
@@ -524,7 +534,7 @@ function TabPanel(props: TabPanelProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateDeadFirstWeek(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics"> 
                       <TextField 
                         type="number" 
                         className="FormNumber"
@@ -535,7 +545,7 @@ function TabPanel(props: TabPanelProps) {
                         onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{updateDeadAfterFirstWeek(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics"> 
                       <TextField 
                         type="number" 
                         className="FormNumber"
@@ -546,7 +556,7 @@ function TabPanel(props: TabPanelProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateBornDead(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics"> 
                       <TextField 
                         type="number" 
                         className="FormNumber"
@@ -557,7 +567,7 @@ function TabPanel(props: TabPanelProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateStillAlive(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl > 
+                <FormControl className="Form-Obstetrics" > 
                 <FormLabel className="RadioLabel" component="legend">Twins History</FormLabel>
                   <RadioGroup 
                     className="RadioCondition"
@@ -570,9 +580,10 @@ function TabPanel(props: TabPanelProps) {
                     <FormControlLabel  control={<Radio value = 'false' />} label="No" />
                   </RadioGroup>
                 </FormControl> 
-
+                
+                </Container>  
               </FormGroup>  
-        </Container>
+
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Container className="Container-History">
@@ -583,7 +594,7 @@ function TabPanel(props: TabPanelProps) {
                   className="RadioCondition"
                   aria-label="socialSec" 
                   name="socialSec"
-                 value={terminationCondition}
+                  value={terminationCondition}
                   onChange={e=>{updateTerminationCondition(e.target.value)}}
                 >
                   <FormControlLabel   control={<Radio value = "normal" />} label="Normal" />
@@ -640,7 +651,7 @@ function TabPanel(props: TabPanelProps) {
         </Container>
         
       </TabPanel>
-        <Grid container justify="center">
+        <Grid container justify="center"  className= "Button-Container">
             
             <ButtonGroup>
             <Link to={{pathname:`/general/`+_id}} className="Link" >

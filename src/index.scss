@@ -91,6 +91,7 @@ h3 {
 
 .HistoryTitle {
   margin-top: 6vw !important;
+  margin-bottom: 5vh !important;
   color: $primary;
 }
 
@@ -196,9 +197,24 @@ h1.login {
 .Obstetrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 10vw;
-  margin-left: 10vw !important;
+  grid-column-gap: 5px !important;
+  margin-left: 5vw !important;
   border-style: dotted;
+  max-width: 75% !important;
   border-color: black;
-  z-index: 1000;
+}
+
+.Form-Obstetrics {
+  margin-top: 1vh !important;
+  margin-left: 2vw !important;
+}
+
+.Button-Container {
+  top: 88vh;
+  left: 10vh;
+  position: absolute;
+}
+
+.Form-Obstetrics-Spontaneous {
+  margin-right: 6.3vw !important;
 }
