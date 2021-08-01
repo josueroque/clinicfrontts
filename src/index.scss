@@ -190,31 +190,43 @@ h1.login {
 
 .FormTextGeneral > #clinicalProfile {
   width: 60vw !important;
-  margin-left: 15vw !important;
+  margin-left: 5vw !important;
   display: block !important;
+}
+
+.Previous-Pregnancy {
+  margin-left: 10vw;
+  margin-right: 10vw;
 }
 
 .Obstetrics {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 5px !important;
-  margin-left: 5vw !important;
+  grid-template-columns: max-content max-content;
+  grid-column-gap: 10px !important;
+  margin-left: 10vw !important;
   border-style: dotted;
   max-width: 75% !important;
   border-color: black;
 }
 
 .Form-Obstetrics {
-  margin-top: 1vh !important;
+  margin-top: 1.25vh !important;
   margin-left: 2vw !important;
 }
 
 .Button-Container {
-  top: 88vh;
+  /*   top: 88vh;
   left: 10vh;
   position: absolute;
+ */
 }
 
 .Form-Obstetrics-Spontaneous {
-  margin-right: 6.3vw !important;
+  @media (max-width: 1700px) {
+    margin-right: 100px !important;
+
+    @media (max-width: 1367px) {
+      margin-right: 52px !important;
+    }
+  }
 }

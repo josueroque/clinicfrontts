@@ -99,7 +99,7 @@ function TabPanel(props: TabPanelProps) {
 //Obstetrics
   const[previousGestation,updatePreviousGestation]=useState<number>(0);
   const[abortions,updateAbortions]=useState<number>(0);
-  const[spontaneousConsecutive,updateSpontaneousConsecutive]=useState<boolean>(false);
+  const[spontaneousConsecutive,updateSpontaneousConsecutive]=useState<string>('');
   const[deliveries,updateDeliveries]=useState<number>(0);
   const[vaginal,updateVaginal]=useState<number>(0);
   const[cesareans,updateCesareans]=useState<number>(0);
@@ -109,11 +109,11 @@ function TabPanel(props: TabPanelProps) {
   const[deadAfterFirstWeek,updateDeadAfterFirstWeek]=useState<number>(0);
   const[stillAlive,updateStillAlive]=useState<number>(0);
   const[previousWeight,updatePreviousWeight]=useState<number>(0);
-  const[twinsHistory,updateTwinsHistory]=useState<boolean>(false);
+  const[twinsHistory,updateTwinsHistory]=useState<string>('');
   //Previous pregnancy
   const [endDate,updateEndDate]= useState<Date | null>(new Date());
   const [terminationCondition,updateTerminationCondition]=useState<string>('');
-  const [plannedPregnancy,updatePlannedPregnancy]=useState<boolean>(false);
+  const [plannedPregnancy,updatePlannedPregnancy]=useState<string>('');
   const [contraceptiveMethod,updateContraceptiveMethod]=useState<string>('none');
   //state
   const [loading,updateLoading]=useState<boolean>(false);
@@ -126,6 +126,7 @@ function TabPanel(props: TabPanelProps) {
     updateHistoryFunction}=useContext(PatientsContext);
 
   useEffect(()=>{
+    console.log(props.match.params.id)
     if (props.match.params.id){
       updateUpdating(true);
       update_Id(props.match.params.id);
@@ -139,6 +140,8 @@ function TabPanel(props: TabPanelProps) {
   },[])
   
   useEffect(()=>{
+    console.log(patient)
+    console.log(history)
     if(patient?._id && history){
       update_Id(patient._id); 
       updateIdNumber(patient.idNumber);
@@ -159,7 +162,7 @@ function TabPanel(props: TabPanelProps) {
       updateViolence(history.violence);
       updatePreviousGestation(history.previousGestation);
       updateAbortions(history.abortions);
-      updateSpontaneousConsecutive(history.spontaneousConsecutive);
+      updateSpontaneousConsecutive(history.spontaneousConsecutive.toString());
       updateDeliveries(history.deliveries);
       updateVaginal(history.vaginal);
       updateCesareans(history.cesareans);
@@ -169,10 +172,10 @@ function TabPanel(props: TabPanelProps) {
       updateDeadAfterFirstWeek(history.deadAfterFirstWeek);
       updateStillAlive(history.stillAlive);
       updatePreviousWeight(history.previousWeight);
-      updateTwinsHistory(history.twinsHistory);
+      updateTwinsHistory(history.twinsHistory.toString());
       if (history.endDate) updateEndDate(history.endDate);
       updateTerminationCondition(history.terminationCondition);
-      updatePlannedPregnancy(history.plannedPregnancy);
+      updatePlannedPregnancy(history.plannedPregnancy.toString());
       updateContraceptiveMethod(history.contraceptiveMethod);
       updateUpdating(true);
       updateBottonLabel('Update');
@@ -183,15 +186,17 @@ function TabPanel(props: TabPanelProps) {
       updateBottonLabel('Save');
     }
     
-  },[patient])
+  },[patient,history])
   
   const fetchPatient=async(_idFetch: string)=>{
     let fetchedPatient=await getHistoryIdFunction({_id:_idFetch});
     let patientGeneral= await getPatientIdFunction({id:_idFetch});
     updateName(patientGeneral.name+' '+patientGeneral.lastName )  
     updateIdNumber(patientGeneral.idNumber);
+    console.log(fetchedPatient)
     if (fetchedPatient){
-    updatePatient(fetchedPatient);
+      updatePatient(fetchedPatient);
+      updateHistory(fetchedPatient);
     }
     return ;
   };
@@ -199,7 +204,8 @@ function TabPanel(props: TabPanelProps) {
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
-   
+  
+
   const save=async(history: any)=>{
     try{
         updateLoading(true);
@@ -217,10 +223,9 @@ function TabPanel(props: TabPanelProps) {
           response =await saveHistoryFunction(history);
        }
        else{
-         console.log('update');
-        
+          console.log('update');
           history._id=_id;
-        console.log(history);
+          console.log(history);
           response = await updateHistoryFunction(history);
        }
 
@@ -235,7 +240,6 @@ function TabPanel(props: TabPanelProps) {
        updateSavedStatus(true);
        updateErrorStatus(true);
  
-
    }
  }
  
@@ -452,20 +456,33 @@ function TabPanel(props: TabPanelProps) {
                           />
                     </FormControl> 
                     <FormControl className="Form-Obstetrics Form-Obstetrics-Spontaneous">
-                      <FormLabel className="RadioLabel" component="legend">Spontaneous Consecutive</FormLabel>
+                      <FormLabel className="RadioLabel" component="legend">
+                        Spontaneous Consecutive 
+                      </FormLabel>
                         <RadioGroup 
                           className="RadioCondition"
                           aria-label="socialSec" 
                           name="spontaneousConsecutive"
                           value={spontaneousConsecutive}
-                          onChange={e=>{updateSpontaneousConsecutive(Boolean (e.target.value))}}
+                          onChange={e=>{updateSpontaneousConsecutive(e.target.value)}}
+                        >
+                          <FormControlLabel   control={<Radio />} value = 'true'  label="Yes" />
+                          <FormControlLabel  control={<Radio  />} value = 'false'  label="No" />
+                        </RadioGroup>
+                    </FormControl>
+                    <FormControl className="Form-Obstetrics" > 
+                      <FormLabel className="RadioLabel" component="legend">Twins History</FormLabel>
+                        <RadioGroup 
+                          className="RadioCondition"
+                          aria-label="socialSec" 
+                          name="twinsHistory"
+                          value={twinsHistory}
+                          onChange={e=>{updateTwinsHistory(e.target.value)}}
                         >
                           <FormControlLabel   control={<Radio value = 'true' />} label="Yes" />
                           <FormControlLabel  control={<Radio value = 'false' />} label="No" />
                         </RadioGroup>
-                    </FormControl>
-
-                      
+                    </FormControl> 
                     <FormControl className="Form-Obstetrics"> 
                           <TextField 
                             type="number" 
@@ -560,26 +577,14 @@ function TabPanel(props: TabPanelProps) {
                       <TextField 
                         type="number" 
                         className="FormNumber"
-                        label="Id Number"
+                        label="Still alive"
                         variant="outlined"
                         size="small"
                         value={stillAlive}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateStillAlive(parseInt(e.target.value))}}
                       />
                 </FormControl> 
-                <FormControl className="Form-Obstetrics" > 
-                <FormLabel className="RadioLabel" component="legend">Twins History</FormLabel>
-                  <RadioGroup 
-                    className="RadioCondition"
-                    aria-label="socialSec" 
-                    name="twinsHistory"
-                    value={twinsHistory}
-                    onChange={e=>{updateTwinsHistory(Boolean (e.target.value))}}
-                  >
-                    <FormControlLabel   control={<Radio value = 'true' />} label="Yes" />
-                    <FormControlLabel  control={<Radio value = 'false' />} label="No" />
-                  </RadioGroup>
-                </FormControl> 
+
                 
                 </Container>  
               </FormGroup>  
@@ -587,7 +592,7 @@ function TabPanel(props: TabPanelProps) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Container className="Container-History">
-          <FormGroup className="Form">
+          <FormGroup className="Form Previous-Pregnancy">
               <FormControl > 
                 <FormLabel className="RadioLabel" component="legend">Termination Condition</FormLabel>
                 <RadioGroup 
@@ -628,12 +633,11 @@ function TabPanel(props: TabPanelProps) {
                   aria-label="socialSec" 
                   name="plannedPregnancy"
                   value={plannedPregnancy}
-                  onChange={e=>{updatePlannedPregnancy(Boolean(e.target.value))}}
+                  onChange={e=>{updatePlannedPregnancy(e.target.value)}}
                 >
-                  <FormControlLabel   control={<Radio value = {true} />} label="Yes" />
-                  <FormControlLabel  control={<Radio value = {false} />} label="No" />
-
-                </RadioGroup>
+                  <FormControlLabel   control={<Radio />} value = 'true'  label="Yes" />
+                  <FormControlLabel  control={<Radio />} value = 'false'  label="No" />
+                 </RadioGroup>
               </FormControl> 
               <FormControl > 
                   <InputLabel id="demo-simple-select-label">Contraceptive Method </InputLabel>
@@ -655,7 +659,7 @@ function TabPanel(props: TabPanelProps) {
             
             <ButtonGroup>
             <Link to={{pathname:`/general/`+_id}} className="Link" >
-              <Button  className="HistoryButton" type="submit" variant="contained" color="primary">       History                          </Button>
+              <Button  className="HistoryButton" type="submit" variant="contained" color="primary"> History</Button>
             </Link>
               <Button className="HistoryButton" type="submit" variant="contained" color="primary">    {buttonLabel}   </Button>
               <Button className="HistoryButton" type="submit" variant="contained" color="primary">    Actual Gestation   </Button>
