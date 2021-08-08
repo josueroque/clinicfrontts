@@ -70,7 +70,6 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-
   function History(props: any  ) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -662,7 +661,9 @@ function TabPanel(props: TabPanelProps) {
               <Button  className="HistoryButton" type="submit" variant="contained" color="primary"> History</Button>
             </Link>
               <Button className="HistoryButton" type="submit" variant="contained" color="primary">    {buttonLabel}   </Button>
-              <Button className="HistoryButton" type="submit" variant="contained" color="primary">    Actual Gestation   </Button>
+            <Link to={{pathname:`/actualgestation/`+_id}} className="Link" >
+              <Button  className="HistoryButton" type="submit" variant="contained" color="primary"> Current Gestation</Button>
+            </Link>
             </ButtonGroup>                
         </Grid>
     </form>

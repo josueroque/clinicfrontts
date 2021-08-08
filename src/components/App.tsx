@@ -4,6 +4,7 @@ import Home from './Home';
 import History from './History';
 import Search from './Search';
 import Login from './Login';
+import ActualGestation from './ActualGestation';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PatientsProvider from '../context/PatientsContext';
 import UsersProvider from '../context/UsersContext';
@@ -35,6 +36,7 @@ const theme = createMuiTheme({
                     <ThemeProvider theme={theme}>
                         {/* <Route exact path='/patients' component={Patients}  /> */}
                         <Route exact path='/history/:id' component={History}  />
+                        <Route exact path='/actualgestation/:id' component={ActualGestation}  />
                         <Route exact path='/general/:id' component={GeneralInfo}  /> 
                         <Route exact path='/general' component={GeneralInfo}  />
                         <Route exact path='/search' component={Search}  />
