@@ -1,10 +1,7 @@
 import React, { Fragment, useState,useContext,useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import { Container,Grid,Button,FormControl,TextField,FormLabel,FormGroup,
-       RadioGroup,Radio,InputLabel,Select,MenuItem, ButtonGroup } 
+import { Grid,Button, ButtonGroup } 
        from '@material-ui/core';
-import {MuiPickersUtilsProvider,KeyboardDatePicker} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import StepButton from '@material-ui/core/StepButton';
@@ -12,12 +9,14 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Paper from '@material-ui/core/Paper';
-import {PatientsContext} from '../context/PatientsContext';
-import Loader from './Loader';
-import Sidebar from './Sidebar';
+import {PatientsContext} from '../../context/PatientsContext';
+import Loader from '../Loader';
+import Sidebar from '../Sidebar';
 import Typography from '@material-ui/core/Typography';
-import {Patient} from '../interfaces/patient';
-import {History as IHistory} from '../interfaces/history';
+import {Patient} from '../../interfaces/patient';
+import FormGeneral from './FormGeneral';
+import {History as IHistory} from '../../interfaces/history';
+import FormAntitetanic from './FormAntitetanic';
   
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
@@ -49,7 +48,7 @@ function getSteps() {
           ,'Toxoplasmosis', 'VIH', 'Hemoglobin', 'Syphilis',  'Bacteriruria', 'Blood Glocose' ];
 }
 
-const ActualGestation = (props:any)=>{
+const ActualGestation = (props:any) : JSX.Element =>{
   const [_id,update_Id] = useState<string>(''); 
   const [buttonLabel,updateBottonLabel] = useState('Save');
   const [patient,updatePatient] = useState<Patient|null>(null);
@@ -58,6 +57,10 @@ const ActualGestation = (props:any)=>{
   const [lastMenstruationDate, updateLastMenstruationDate] = useState<Date|null>(new Date());
   const [size, updateSize] = useState<number>(0);
   const [previousWeight, updatePreviousWeight] = useState<number>(0);
+  const [current, updateCurrent] = useState<string>('');
+  const [dose1, updateDose1] = useState<number|null>(0);
+  const [dose2, updateDose2] = useState<number|null>(0);
+
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
   
@@ -87,72 +90,28 @@ const ActualGestation = (props:any)=>{
       switch (step) {
         case 0:
           return (
-            <Container className='StepContent'>
-              <FormControl > 
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container justify ="flex-start">
-                    <KeyboardDatePicker 
-                      className="FormTextGeneral"
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label="Last menstruation date"
-                      format="dd/MM/yyyy"
-                      value={lastMenstruationDate}
-                      onChange={updateLastMenstruationDate}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                  />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </FormControl>
-              <FormControl > 
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container justify ="flex-start">
-                    <KeyboardDatePicker 
-                      className="FormTextGeneral"
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label="Likely delivery date"
-                      format="dd/MM/yyyy"
-                      value={likelyDeliveryDate}
-                      onChange={updateLikelyDeliveryDate}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                  />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </FormControl>
-              <FormControl > 
-                  <TextField 
-                    type="text" 
-                    className="FormTextGeneral"
-                    id="idNumber"
-                    label="Size"
-                    variant="outlined"
-                    size="small"
-                    value={size}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updateSize(parseFloat(e.target.value))}}
-                  />
-              </FormControl>         
-              <FormControl > 
-                  <TextField 
-                    type="text" 
-                    className="FormTextGeneral"
-                    id="idNumber"
-                    label="Previous Weight"
-                    variant="outlined"
-                    size="small"
-                    value={previousWeight}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{updatePreviousWeight(parseFloat(e.target.value))}}
-                  />
-              </FormControl>         
-            </Container>
-          )
-          ;
+            <FormGeneral
+              likelyDeliveryDate ={likelyDeliveryDate}
+              size = {size}
+              previousWeight = {previousWeight}
+              lastMenstruationDate = {lastMenstruationDate}
+              updateLikelyDeliveryDate = {updateLikelyDeliveryDate}
+              updateSize = {updateSize}
+              updatePreviousWeight = {updatePreviousWeight}
+              updateLastMenstruationDate = {updateLastMenstruationDate} 
+            />
+          );          ;
         case 1:
-          return 'An ad group contains one or more ads which target a shared set of keywords.';
+          return (
+            <FormAntitetanic 
+              current= {current}
+              dose1 = {dose1}
+              dose2={dose2}
+              updateCurrent={updateCurrent}
+              updateDose1={updateDose1}
+              updateDose2={updateDose2}
+            /> 
+          );
         case 2:
           return `Try out different ad text to see what brings in the most customers,
                   and learn how to enhance your ads using features like ad extensions.
@@ -225,7 +184,7 @@ const ActualGestation = (props:any)=>{
     };
     
     const isStepOptional = (step: number) => {
-      return step === 1;
+      return null;
     };
 
     const isStepSkipped = (step: number) => {

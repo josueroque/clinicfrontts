@@ -4,7 +4,7 @@ import Home from './Home';
 import History from './History';
 import Search from './Search';
 import Login from './Login';
-import ActualGestation from './ActualGestation';
+import ActualGestation from './CurrentGestation';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PatientsProvider from '../context/PatientsContext';
 import UsersProvider from '../context/UsersContext';
