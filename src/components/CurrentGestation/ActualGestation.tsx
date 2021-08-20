@@ -1,7 +1,6 @@
 import React, { Fragment, useState,useContext,useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import { Grid,Button, ButtonGroup } 
-       from '@material-ui/core';
+import { Grid,Button, ButtonGroup } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import StepButton from '@material-ui/core/StepButton';
@@ -17,7 +16,10 @@ import {Patient} from '../../interfaces/patient';
 import FormGeneral from './FormGeneral';
 import {History as IHistory} from '../../interfaces/history';
 import FormAntitetanic from './FormAntitetanic';
-  
+import FormNormalExam from './FormNormalExam';
+import FormCervix from './FormCervix';
+
+
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
   root: {
@@ -60,6 +62,12 @@ const ActualGestation = (props:any) : JSX.Element =>{
   const [current, updateCurrent] = useState<string>('');
   const [dose1, updateDose1] = useState<number|null>(0);
   const [dose2, updateDose2] = useState<number|null>(0);
+  const [dental, updateDental] = useState<string>('');
+  const [mammary, updateMammary] = useState<string>('');
+  const [visualInspection, updateVisualInspection] = useState<string>('');
+  const [papanicolao, updatePapanicolao] = useState<string>('');
+  const [colposcopy, updateColposcopy] = useState<string>('');
+
 
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -73,17 +81,11 @@ const ActualGestation = (props:any) : JSX.Element =>{
     updateHistoryFunction}=useContext(PatientsContext);
 
     useEffect(() => {
-        if (props.match?.params?.id){
-          getPatient(props.match?.params?.id); 
-        }
+        if (props.match?.params?.id) getPatient(props.match?.params?.id); 
     },[])
 
     useEffect(()=>{
-      console.log(patient)  
-      if(patient){
-         update_Id(patient._id);
-      }
-      
+      if(patient) update_Id(patient._id);
     },[patient])
 
     function getStepContent(step: number) {
@@ -104,8 +106,8 @@ const ActualGestation = (props:any) : JSX.Element =>{
         case 1:
           return (
             <FormAntitetanic 
-              current= {current}
-              dose1 = {dose1}
+              current={current}
+              dose1={dose1}
               dose2={dose2}
               updateCurrent={updateCurrent}
               updateDose1={updateDose1}
@@ -113,12 +115,27 @@ const ActualGestation = (props:any) : JSX.Element =>{
             /> 
           );
         case 2:
-          return `Try out different ad text to see what brings in the most customers,
-                  and learn how to enhance your ads using features like ad extensions.
-                  If you run into any problems with your ads, find out how to tell if
-                  they're running and how to resolve approval issues.`;
-        default:
-          return 'Unknown step';
+          return (
+            <FormNormalExam
+              dental={dental}
+              mammary={mammary}
+              updateDental={updateDental}
+              updateMammary={updateMammary}
+            />  
+          )
+        case 3: 
+          return (
+            <FormCervix 
+              visualInspection={visualInspection}
+              papanicolao={papanicolao}
+              colposcopy={colposcopy}
+              updateVisualInspection={updateVisualInspection}
+              updatePapanicolao={updatePapanicolao}
+              updateColposcopy={updateColposcopy}
+            />
+          )
+          default:
+        return 'Unknown step';
       }
     }
     

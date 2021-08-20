@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, FormControl, TextField, RadioGroup, Radio, FormControlLabel, FormLabel } from '@material-ui/core';
-import { formAntitetanicProps as iFormAntitetanicProps } from '../../interfaces/currentGestations';
+import { antitetanicProps as iFormAntitetanicProps } from '../../interfaces/currentGestations';
 
 const FormAntitetanic = (props: iFormAntitetanicProps) : JSX.Element => {
   return (

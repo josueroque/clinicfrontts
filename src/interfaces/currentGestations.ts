@@ -10,12 +10,29 @@ export interface formGeneralProps {
   updateLastMenstruationDate :  Dispatch<SetStateAction <Date|null>>
 }
 
-export interface formAntitetanicProps {
-    current: string;
-    dose1 : number|null;
-    dose2 : number|null;
-    updateCurrent: Dispatch<SetStateAction <string>>;
-    updateDose1: Dispatch<SetStateAction <number|null>>;
-    updateDose2: Dispatch<SetStateAction <number|null>>;
+export interface antitetanicProps {
+    current: string,
+    dose1 : number|null
+    dose2 : number|null,
+    updateCurrent: Dispatch<SetStateAction <string>>,
+    updateDose1: Dispatch<SetStateAction <number|null>>,
+    updateDose2: Dispatch<SetStateAction <number|null>>,
 
 }
+
+export interface normalExamProps {
+    dental: string,
+    mammary: string,
+    updateDental: Dispatch<SetStateAction <string>>,
+    updateMammary : Dispatch<SetStateAction <string>>, 
+}
+
+export interface cervixProps {
+    visualInspection: string,
+    papanicolao: string,
+    colposcopy: string,
+    updateVisualInspection: Dispatch<SetStateAction <string>>,
+    updatePapanicolao: Dispatch<SetStateAction <string>>,
+    updateColposcopy: Dispatch<SetStateAction <string>>
+}
+
