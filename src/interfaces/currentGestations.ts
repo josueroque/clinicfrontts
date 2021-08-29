@@ -43,3 +43,12 @@ export interface groupProps {
   updatePositive: Dispatch<SetStateAction<string>>;
   updateAntiDGlobulin: Dispatch<SetStateAction<string | null>>;
 }
+
+export interface toxoplasmosisProps {
+  toxoplasmosisLessThanTwenty: string | null;
+  toxoplasmosisGreaterThanTwenty: string | null;
+  toxoplasmosisFirst: string | null;
+  updateToxoplasmosisLessThanTwenty: Dispatch<SetStateAction<string | null>>;
+  updateToxoplasmosisGreaterThanTwenty: Dispatch<SetStateAction<string | null>>;
+  updateToxoplasmosisFirst: Dispatch<SetStateAction<string | null>>;
+}

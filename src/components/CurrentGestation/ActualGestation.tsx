@@ -19,6 +19,7 @@ import FormAntitetanic from "./FormAntitetanic";
 import FormNormalExam from "./FormNormalExam";
 import FormCervix from "./FormCervix";
 import FormGroup from "./FormGroup";
+import FormToxoplasmosis from "./FormToxoplasmosis";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -84,6 +85,13 @@ const ActualGestation = (props: any): JSX.Element => {
   const [group, updateGroup] = useState<string>("");
   const [positive, updatePositive] = useState<string>("");
   const [antiDGlobulin, updateAntiDGlobulin] = useState<string | null>("");
+  const [toxoplasmosisLessThanTwenty, updateToxoplasmosisLessThanTwenty] =
+    useState<string | null>("");
+  const [toxoplasmosisGreaterThanTwenty, updateToxoplasmosisGreaterThanTwenty] =
+    useState<string | null>("");
+  const [toxoplasmosisFirst, updateToxoplasmosisFirst] = useState<
+    string | null
+  >("");
 
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -161,6 +169,21 @@ const ActualGestation = (props: any): JSX.Element => {
             updateGroup={updateGroup}
             updatePositive={updatePositive}
             updateAntiDGlobulin={updateAntiDGlobulin}
+          />
+        );
+      case 5:
+        return (
+          <FormToxoplasmosis
+            toxoplasmosisLessThanTwenty={toxoplasmosisLessThanTwenty}
+            toxoplasmosisGreaterThanTwenty={toxoplasmosisGreaterThanTwenty}
+            toxoplasmosisFirst={toxoplasmosisFirst}
+            updateToxoplasmosisLessThanTwenty={
+              updateToxoplasmosisLessThanTwenty
+            }
+            updateToxoplasmosisGreaterThanTwenty={
+              updateToxoplasmosisGreaterThanTwenty
+            }
+            updateToxoplasmosisFirst={updateToxoplasmosisFirst}
           />
         );
       default:
