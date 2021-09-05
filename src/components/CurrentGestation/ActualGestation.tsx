@@ -20,6 +20,7 @@ import FormNormalExam from "./FormNormalExam";
 import FormCervix from "./FormCervix";
 import FormGroup from "./FormGroup";
 import FormToxoplasmosis from "./FormToxoplasmosis";
+import FormVIH from "./FormVIH";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,6 +93,13 @@ const ActualGestation = (props: any): JSX.Element => {
   const [toxoplasmosisFirst, updateToxoplasmosisFirst] = useState<
     string | null
   >("");
+  const [vihRequestedLessThanTwenty, updateVihRequestedLessThanTwenty] =
+    useState("");
+  const [vihRequestedGreaterThanTwenty, updateVihRequestedGreaterThanTwenty] =
+    useState("");
+  const [vihDoneLessThanTwenty, updateVihDoneLessThanTwenty] = useState("");
+  const [vihDoneGreaterThanTwenty, updateVihDoneGreaterThanTwenty] =
+    useState("");
 
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -184,6 +192,21 @@ const ActualGestation = (props: any): JSX.Element => {
               updateToxoplasmosisGreaterThanTwenty
             }
             updateToxoplasmosisFirst={updateToxoplasmosisFirst}
+          />
+        );
+      case 6:
+        return (
+          <FormVIH
+            vihRequestedLessThanTwenty={vihRequestedLessThanTwenty}
+            vihRequestedGreaterThanTwenty={vihRequestedGreaterThanTwenty}
+            vihDoneLessThanTwenty={vihDoneLessThanTwenty}
+            vihDoneGreaterThanTwenty={vihDoneGreaterThanTwenty}
+            updateVihRequestedLessThanTwenty={updateVihRequestedLessThanTwenty}
+            updateVihRequestedGreaterThanTwenty={
+              updateVihRequestedGreaterThanTwenty
+            }
+            updateVihDoneLessThanTwenty={updateVihDoneLessThanTwenty}
+            updateVihDoneGreaterThanTwenty={updateVihDoneGreaterThanTwenty}
           />
         );
       default:

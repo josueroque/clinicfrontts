@@ -52,3 +52,14 @@ export interface toxoplasmosisProps {
   updateToxoplasmosisGreaterThanTwenty: Dispatch<SetStateAction<string | null>>;
   updateToxoplasmosisFirst: Dispatch<SetStateAction<string | null>>;
 }
+
+export interface VIHProps {
+  vihRequestedLessThanTwenty: string;
+  vihDoneLessThanTwenty: string;
+  vihRequestedGreaterThanTwenty: string;
+  vihDoneGreaterThanTwenty: string;
+  updateVihRequestedLessThanTwenty: Dispatch<SetStateAction<string>>;
+  updateVihDoneLessThanTwenty: Dispatch<SetStateAction<string>>;
+  updateVihRequestedGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+  updateVihDoneGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+}
