@@ -21,6 +21,7 @@ import FormCervix from "./FormCervix";
 import FormGroup from "./FormGroup";
 import FormToxoplasmosis from "./FormToxoplasmosis";
 import FormVIH from "./FormVIH";
+import FormHemoglobin from "./FormHemoglobin";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -100,6 +101,10 @@ const ActualGestation = (props: any): JSX.Element => {
   const [vihDoneLessThanTwenty, updateVihDoneLessThanTwenty] = useState("");
   const [vihDoneGreaterThanTwenty, updateVihDoneGreaterThanTwenty] =
     useState("");
+  const [hemoglobinlessThanTwenty, updateHemoglobinLessThanTwenty] =
+    useState(0);
+  const [hemoglobinGreaterThanTwenty, updateHemoglobinGreaterThanTwenty] =
+    useState(0);
 
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -209,6 +214,18 @@ const ActualGestation = (props: any): JSX.Element => {
             updateVihDoneGreaterThanTwenty={updateVihDoneGreaterThanTwenty}
           />
         );
+      case 7:
+        return (
+          <FormHemoglobin
+            hemoglobinLessThanTwenty={hemoglobinlessThanTwenty}
+            hemoglobinGreaterThanTwenty={hemoglobinGreaterThanTwenty}
+            updateHemoglobinLessThanTwenty={updateHemoglobinLessThanTwenty}
+            updateHemoglobinGreaterThanTwenty={
+              updateHemoglobinGreaterThanTwenty
+            }
+          />
+        );
+
       default:
         return "Unknown step";
     }

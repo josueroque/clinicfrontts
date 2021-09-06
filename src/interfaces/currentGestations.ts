@@ -63,3 +63,10 @@ export interface VIHProps {
   updateVihRequestedGreaterThanTwenty: Dispatch<SetStateAction<string>>;
   updateVihDoneGreaterThanTwenty: Dispatch<SetStateAction<string>>;
 }
+
+export interface hemoglobinProps {
+  hemoglobinLessThanTwenty: number;
+  hemoglobinGreaterThanTwenty: number;
+  updateHemoglobinLessThanTwenty: Dispatch<SetStateAction<number>>;
+  updateHemoglobinGreaterThanTwenty: Dispatch<SetStateAction<number>>;
+}
