@@ -70,3 +70,48 @@ export interface hemoglobinProps {
   updateHemoglobinLessThanTwenty: Dispatch<SetStateAction<number>>;
   updateHemoglobinGreaterThanTwenty: Dispatch<SetStateAction<number>>;
 }
+
+export interface siphilysProps {
+  syphilisVDRLLessThanTwenty: string;
+  syphilisVDRLLessThanTwentyWeeks: number | null;
+  syphilisVDRLGreaterThanTwenty: string;
+  syphilisVDRLGreaterThanTwentyWeeks: number | null;
+  syphilisFTALessThanTwenty: string;
+  syphilisFTALessThanTwentyWeeks: number | null;
+  syphilisFTAGreaterThanTwenty: string;
+  syphilisFTAGreaterThanTwentyWeeks: number | null;
+  syphilisTreatmentLessThanTwenty: string;
+  syphilisTreatmentLessThanTwentyWeeks: number | null;
+  syphilisTreatmentGreaterThanTwenty: string;
+  syphilisTreatmentGreaterThanTwentyWeeks: number | null;
+  syphilisPartnerTreatmentLessThanTwenty: string;
+  syphilisPartnerTreatmentGreaterThanTwenty: string;
+  updateSyphilisVDRLLessThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisVDRLLessThanTwentyWeeks: Dispatch<
+    SetStateAction<number | null>
+  >;
+  updateSyphilisVDRLGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisVDRLGreaterThanTwentyWeeks: Dispatch<
+    SetStateAction<number | null>
+  >;
+  updateSyphilisFTALessThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisFTALessThanTwentyWeeks: Dispatch<SetStateAction<number | null>>;
+  updateSyphilisFTAGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisFTAGreaterThanTwentyWeeks: Dispatch<
+    SetStateAction<number | null>
+  >;
+  updateSyphilisTreatmentLessThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisTreatmentLessThanTwentyWeeks: Dispatch<
+    SetStateAction<number | null>
+  >;
+  updateSyphilisTreatmentGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+  updateSyphilisTreatmentGreaterThanTwentyWeeks: Dispatch<
+    SetStateAction<number | null>
+  >;
+  updateSyphilisPartnerTreatmentLessThanTwenty: Dispatch<
+    SetStateAction<string>
+  >;
+  updateSyphilisPartnerTreatmentGreaterThanTwenty: Dispatch<
+    SetStateAction<string>
+  >;
+}

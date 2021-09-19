@@ -22,6 +22,7 @@ import FormGroup from "./FormGroup";
 import FormToxoplasmosis from "./FormToxoplasmosis";
 import FormVIH from "./FormVIH";
 import FormHemoglobin from "./FormHemoglobin";
+import FormSyphilis from "./FormSyphilis";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -105,7 +106,53 @@ const ActualGestation = (props: any): JSX.Element => {
     useState(0);
   const [hemoglobinGreaterThanTwenty, updateHemoglobinGreaterThanTwenty] =
     useState(0);
-
+  // Syphilis
+  const [syphilisVDRLLessThanTwenty, updateSyphilisVDRLLessThanTwenty] =
+    useState<string>("");
+  const [
+    syphilisVDRLLessThanTwentyWeeks,
+    updateSyphilisVDRLLessThanTwentyWeeks,
+  ] = useState<number | null>(null);
+  const [syphilisVDRLGreaterThanTwenty, updateSyphilisVDRLGreaterThanTwenty] =
+    useState<string>("");
+  const [
+    syphilisVDRLGreaterThanTwentyWeeks,
+    updateSyphilisVDRLGreaterThanTwentyWeeks,
+  ] = useState<number | null>(null);
+  const [syphilisFTALessThanTwenty, updateSyphilisFTALessThanTwenty] =
+    useState<string>("");
+  const [syphilisFTALessThanTwentyWeeks, updateSyphilisFTALessThanTwentyWeeks] =
+    useState<number | null>(null);
+  const [syphilisFTAGreaterThanTwenty, updateSyphilisFTAGreaterThanTwenty] =
+    useState<string>("");
+  const [
+    syphilisFTAGreaterThanTwentyWeeks,
+    updateSyphilisFTAGreaterThanTwentyWeeks,
+  ] = useState<number | null>(null);
+  const [
+    syphilisTreatmentLessThanTwenty,
+    updateSyphilisTreatmentLessThanTwenty,
+  ] = useState<string>("");
+  const [
+    syphilisTreatmentLessThanTwentyWeeks,
+    updateSyphilisTreatmentLessThanTwentyWeeks,
+  ] = useState<number | null>(null);
+  const [
+    syphilisTreatmentGreaterThanTwenty,
+    updateSyphilisTreatmentGreaterThanTwenty,
+  ] = useState<string>("");
+  const [
+    syphilisTreatmentGreaterThanTwentyWeeks,
+    updateSyphilisTreatmentGreaterThanTwentyWeeks,
+  ] = useState<number | null>(null);
+  const [
+    syphilisPartnerTreatmentLessThanTwenty,
+    updateSyphilisPartnerTreatmentLessThanTwenty,
+  ] = useState<string>("");
+  const [
+    syphilisPartnerTreatmentGreaterThanTwenty,
+    updateSyphilisPartnerTreatmentGreaterThanTwenty,
+  ] = useState<string>("");
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -222,6 +269,77 @@ const ActualGestation = (props: any): JSX.Element => {
             updateHemoglobinLessThanTwenty={updateHemoglobinLessThanTwenty}
             updateHemoglobinGreaterThanTwenty={
               updateHemoglobinGreaterThanTwenty
+            }
+          />
+        );
+      case 8:
+        return (
+          <FormSyphilis
+            syphilisVDRLLessThanTwenty={syphilisVDRLLessThanTwenty}
+            syphilisVDRLLessThanTwentyWeeks={syphilisVDRLLessThanTwentyWeeks}
+            syphilisVDRLGreaterThanTwenty={syphilisVDRLGreaterThanTwenty}
+            syphilisVDRLGreaterThanTwentyWeeks={
+              syphilisVDRLGreaterThanTwentyWeeks
+            }
+            syphilisFTALessThanTwenty={syphilisFTALessThanTwenty}
+            syphilisFTALessThanTwentyWeeks={syphilisFTALessThanTwentyWeeks}
+            syphilisFTAGreaterThanTwenty={syphilisFTAGreaterThanTwenty}
+            syphilisFTAGreaterThanTwentyWeeks={
+              syphilisFTAGreaterThanTwentyWeeks
+            }
+            syphilisTreatmentLessThanTwenty={syphilisTreatmentLessThanTwenty}
+            syphilisTreatmentLessThanTwentyWeeks={
+              syphilisTreatmentLessThanTwentyWeeks
+            }
+            syphilisTreatmentGreaterThanTwenty={
+              syphilisTreatmentGreaterThanTwenty
+            }
+            syphilisTreatmentGreaterThanTwentyWeeks={
+              syphilisTreatmentGreaterThanTwentyWeeks
+            }
+            syphilisPartnerTreatmentLessThanTwenty={
+              syphilisPartnerTreatmentLessThanTwenty
+            }
+            syphilisPartnerTreatmentGreaterThanTwenty={
+              syphilisPartnerTreatmentGreaterThanTwenty
+            }
+            updateSyphilisVDRLLessThanTwenty={updateSyphilisVDRLLessThanTwenty}
+            updateSyphilisVDRLLessThanTwentyWeeks={
+              updateSyphilisVDRLLessThanTwentyWeeks
+            }
+            updateSyphilisVDRLGreaterThanTwenty={
+              updateSyphilisVDRLGreaterThanTwenty
+            }
+            updateSyphilisVDRLGreaterThanTwentyWeeks={
+              updateSyphilisVDRLGreaterThanTwentyWeeks
+            }
+            updateSyphilisFTALessThanTwenty={updateSyphilisFTALessThanTwenty}
+            updateSyphilisFTALessThanTwentyWeeks={
+              updateSyphilisFTALessThanTwentyWeeks
+            }
+            updateSyphilisFTAGreaterThanTwenty={
+              updateSyphilisFTAGreaterThanTwenty
+            }
+            updateSyphilisFTAGreaterThanTwentyWeeks={
+              updateSyphilisFTAGreaterThanTwentyWeeks
+            }
+            updateSyphilisTreatmentLessThanTwenty={
+              updateSyphilisTreatmentLessThanTwenty
+            }
+            updateSyphilisTreatmentLessThanTwentyWeeks={
+              updateSyphilisTreatmentLessThanTwentyWeeks
+            }
+            updateSyphilisTreatmentGreaterThanTwenty={
+              updateSyphilisTreatmentGreaterThanTwenty
+            }
+            updateSyphilisTreatmentGreaterThanTwentyWeeks={
+              updateSyphilisTreatmentGreaterThanTwentyWeeks
+            }
+            updateSyphilisPartnerTreatmentLessThanTwenty={
+              updateSyphilisPartnerTreatmentLessThanTwenty
+            }
+            updateSyphilisPartnerTreatmentGreaterThanTwenty={
+              updateSyphilisPartnerTreatmentGreaterThanTwenty
             }
           />
         );

@@ -257,3 +257,27 @@ h1.login {
 .FormTextHemoglobin {
   margin-left: 2vw !important;
 }
+
+.SyphilisContainer {
+  margin-top: 2vh;
+}
+
+.FormTextSyphilisGreater {
+  margin-top: 2vh !important;
+  margin-left: -10vh !important;
+}
+
+.FormTextSyphilis {
+  margin-top: 2vh !important;
+  margin-left: 6vh !important;
+  @media (max-width: 1367px) {
+    margin-top: 2vh !important;
+    margin-left: 10vh !important;
+  }
+}
+
+.RadioConditionSyphillisFTA {
+  width: 75% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr !important ;
+}
