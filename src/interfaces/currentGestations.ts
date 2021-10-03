@@ -122,3 +122,10 @@ export interface bateriuriaProps {
   updateBateriuriaLessThatTwenty: Dispatch<SetStateAction<string>>;
   updateBacteriuriaGreaterThanTwenty: Dispatch<SetStateAction<string>>;
 }
+
+export interface bloodGlucoseProps {
+  bloodGlucoseLessThanTwenty: number;
+  bloodGlucoseGreaterThanTwenty: number;
+  updateBloodGlucoseLessThanTwenty: Dispatch<SetStateAction<number>>;
+  updateBloodGlucoseGreaterThanTwenty: Dispatch<SetStateAction<number>>;
+}

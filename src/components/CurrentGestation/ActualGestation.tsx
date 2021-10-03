@@ -24,6 +24,7 @@ import FormVIH from "./FormVIH";
 import FormHemoglobin from "./FormHemoglobin";
 import FormSyphilis from "./FormSyphilis";
 import FormBacteriuria from "./FormBacteriuria";
+import FormBloodGlucose from "./FormBloodGlucose";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -158,6 +159,10 @@ const ActualGestation = (props: any): JSX.Element => {
     useState<string>("");
   const [bacteriuriaGreaterThanTwenty, updateBacteriuriaGreaterThanTwenty] =
     useState<string>("");
+  const [bloodGlucoseLessThanTwenty, updateBloodGlucoseLessThanTwenty] =
+    useState(0);
+  const [bloodGlucoseGreaterThanTwenty, updateBloodGlucoseGreaterThanTwenty] =
+    useState(0);
 
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -357,6 +362,17 @@ const ActualGestation = (props: any): JSX.Element => {
             updateBateriuriaLessThatTwenty={updateBacteriuriaLessThanTwenty}
             updateBacteriuriaGreaterThanTwenty={
               updateBacteriuriaGreaterThanTwenty
+            }
+          />
+        );
+      case 10:
+        return (
+          <FormBloodGlucose
+            bloodGlucoseLessThanTwenty={bloodGlucoseLessThanTwenty}
+            bloodGlucoseGreaterThanTwenty={bloodGlucoseGreaterThanTwenty}
+            updateBloodGlucoseLessThanTwenty={updateBloodGlucoseLessThanTwenty}
+            updateBloodGlucoseGreaterThanTwenty={
+              updateBloodGlucoseGreaterThanTwenty
             }
           />
         );
