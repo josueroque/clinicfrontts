@@ -115,3 +115,10 @@ export interface siphilysProps {
     SetStateAction<string>
   >;
 }
+
+export interface bateriuriaProps {
+  bateriuriaLessThatTwenty: string;
+  bacteriuriaGreaterThanTwenty: string;
+  updateBateriuriaLessThatTwenty: Dispatch<SetStateAction<string>>;
+  updateBacteriuriaGreaterThanTwenty: Dispatch<SetStateAction<string>>;
+}

@@ -23,6 +23,7 @@ import FormToxoplasmosis from "./FormToxoplasmosis";
 import FormVIH from "./FormVIH";
 import FormHemoglobin from "./FormHemoglobin";
 import FormSyphilis from "./FormSyphilis";
+import FormBacteriuria from "./FormBacteriuria";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -153,6 +154,11 @@ const ActualGestation = (props: any): JSX.Element => {
     syphilisPartnerTreatmentGreaterThanTwenty,
     updateSyphilisPartnerTreatmentGreaterThanTwenty,
   ] = useState<string>("");
+  const [bacteriuriaLessThanTwenty, updateBacteriuriaLessThanTwenty] =
+    useState<string>("");
+  const [bacteriuriaGreaterThanTwenty, updateBacteriuriaGreaterThanTwenty] =
+    useState<string>("");
+
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -343,7 +349,17 @@ const ActualGestation = (props: any): JSX.Element => {
             }
           />
         );
-
+      case 9:
+        return (
+          <FormBacteriuria
+            bateriuriaLessThatTwenty={bacteriuriaLessThanTwenty}
+            bacteriuriaGreaterThanTwenty={bacteriuriaGreaterThanTwenty}
+            updateBateriuriaLessThatTwenty={updateBacteriuriaLessThanTwenty}
+            updateBacteriuriaGreaterThanTwenty={
+              updateBacteriuriaGreaterThanTwenty
+            }
+          />
+        );
       default:
         return "Unknown step";
     }
