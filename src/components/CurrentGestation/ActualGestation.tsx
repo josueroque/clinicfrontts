@@ -26,6 +26,9 @@ import FormSyphilis from "./FormSyphilis";
 import FormBacteriuria from "./FormBacteriuria";
 import FormBloodGlucose from "./FormBloodGlucose";
 
+import requireAuth from "../requireAuth";
+import swal from "sweetalert";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -164,6 +167,11 @@ const ActualGestation = (props: any): JSX.Element => {
   const [bloodGlucoseGreaterThanTwenty, updateBloodGlucoseGreaterThanTwenty] =
     useState(0);
 
+  const [loading, updateLoading] = useState(false);
+  const [errorStatus, updateErrorStatus] = useState(false);
+  const [savedStatus, updateSavedStatus] = useState(false);
+  const [updating, updateUpdating] = useState(false);
+
   const [completed, setCompleted] = React.useState(new Set<number>());
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -171,11 +179,82 @@ const ActualGestation = (props: any): JSX.Element => {
   const steps = getSteps();
 
   const {
-    saveHistoryFunction,
     getHistoryIdFunction,
     getPatientIdFunction,
     updateHistoryFunction,
+    updateCurrentGestationFunction,
   } = useContext(PatientsContext);
+
+  const wait = async (ms: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  };
+
+  const saveCurrentGestation = async () => {
+    try {
+      updateLoading(true);
+      updateErrorStatus(true);
+      updateSavedStatus(false);
+      await wait(1000);
+      updateLoading(false);
+      updateSavedStatus(true);
+      let response;
+      let gestation = {
+        idNumber: patient?._id,
+        lastMenstruationDate,
+        size,
+        previousWeight,
+        current,
+        dose1,
+        dose2,
+        dental,
+        mammary,
+        visualInspection,
+        papanicolao,
+        colposcopy,
+        group,
+        positive,
+        antiDGlobulin,
+        toxoplasmosisLessThanTwenty,
+        toxoplasmosisGreaterThanTwenty,
+        toxoplasmosisFirst,
+        vihRequestedLessThanTwenty,
+        vihRequestedGreaterThanTwenty,
+        vihDoneLessThanTwenty,
+        vihDoneGreaterThanTwenty,
+        hemoglobinlessThanTwenty,
+        hemoglobinGreaterThanTwenty,
+        syphilisVDRLLessThanTwenty,
+        syphilisVDRLLessThanTwentyWeeks,
+        syphilisVDRLGreaterThanTwenty,
+        syphilisVDRLGreaterThanTwentyWeeks,
+        syphilisFTALessThanTwenty,
+        syphilisFTALessThanTwentyWeeks,
+        syphilisFTAGreaterThanTwenty,
+        syphilisFTAGreaterThanTwentyWeeks,
+        syphilisTreatmentLessThanTwenty,
+        syphilisTreatmentLessThanTwentyWeeks,
+        syphilisTreatmentGreaterThanTwenty,
+        syphilisTreatmentGreaterThanTwentyWeeks,
+        syphilisPartnerTreatmentLessThanTwenty,
+        syphilisPartnerTreatmentGreaterThanTwenty,
+        bacteriuriaLessThanTwenty,
+        bacteriuriaGreaterThanTwenty,
+        bloodGlucoseLessThanTwenty,
+        bloodGlucoseGreaterThanTwenty,
+      };
+      response = await updateCurrentGestationFunction(gestation);
+      if (response.statusText === "OK") {
+        updateErrorStatus(false);
+      }
+      await wait(1000);
+    } catch (error: any) {
+      swal("Something has failed!", error.toString(), "error");
+      updateSavedStatus(true);
+      updateErrorStatus(true);
+    }
+  };
 
   useEffect(() => {
     if (props.match?.params?.id) getPatient(props.match?.params?.id);
@@ -451,9 +530,9 @@ const ActualGestation = (props: any): JSX.Element => {
   return (
     <Fragment>
       <Sidebar></Sidebar>
-      <h1 className='HistoryTitle'>
+      <Typography variant='h3' align='center' className='GestationTitle'>
         {`Current Gestation ${patient?.name} ${patient?.lastName}`}
-      </h1>
+      </Typography>
       <div className={classes.root}>
         <Stepper nonLinear activeStep={activeStep} orientation='vertical'>
           {steps.map((label, index) => {
@@ -507,7 +586,6 @@ const ActualGestation = (props: any): JSX.Element => {
               variant='contained'
               color='primary'
             >
-              {" "}
               History
             </Button>
           </Link>
@@ -516,9 +594,9 @@ const ActualGestation = (props: any): JSX.Element => {
             type='submit'
             variant='contained'
             color='primary'
+            onClick={saveCurrentGestation}
           >
-            {" "}
-            {buttonLabel}{" "}
+            {buttonLabel}
           </Button>
         </ButtonGroup>
       </Grid>
@@ -526,4 +604,4 @@ const ActualGestation = (props: any): JSX.Element => {
   );
 };
 
-export default ActualGestation;
+export default requireAuth(ActualGestation);

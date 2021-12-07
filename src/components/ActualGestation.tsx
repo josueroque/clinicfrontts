@@ -100,7 +100,6 @@ const ActualGestation = (props: any) => {
   }, []);
 
   useEffect(() => {
-    console.log(patient);
     if (patient) {
       update_Id(patient._id);
     }

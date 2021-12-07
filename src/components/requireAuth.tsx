@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import {UsersContext} from '../context/UsersContext';
-import  { Redirect } from 'react-router-dom' 
-
+import React, { Component } from "react";
+import { UsersContext } from "../context/UsersContext";
+import { Redirect } from "react-router-dom";
+/* eslint-disable */
 export default (ChildComponent: any) => {
-  class ComposedComponent extends Component  {
+  class ComposedComponent extends Component {
     // Our component just got rendered
     static contextType = UsersContext;
-    
+
     componentDidMount() {
       this.shouldNavigateAway();
     }
@@ -16,19 +16,17 @@ export default (ChildComponent: any) => {
       this.shouldNavigateAway();
     }
 
-    shouldNavigateAway() { 
-      const {auth} : any = this.context;
-     
+    shouldNavigateAway() {
+      const { auth }: any = this.context;
+
       if (!auth) {
         //this.props.history.push('/login');
-        return <Redirect to='/login'  />
+        return <Redirect to='/logout' />;
       }
       if (!auth.token) {
-//        this.props.history.push('/login');
-          return <Redirect to='/login'  />
- 
+        //        this.props.history.push('/login');
+        return <Redirect to='/login' />;
       }
-
     }
 
     render() {
@@ -37,5 +35,4 @@ export default (ChildComponent: any) => {
   }
 
   return ComposedComponent;
-
 };
