@@ -8,7 +8,10 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import StepContent from "@material-ui/core/StepContent";
 import Paper from "@material-ui/core/Paper";
-import { PatientsContext } from "../../context/PatientsContext";
+import {
+  getCurrentGestationFunction,
+  PatientsContext,
+} from "../../context/PatientsContext";
 import Loader from "../Loader";
 import Sidebar from "../Sidebar";
 import Typography from "@material-ui/core/Typography";
@@ -28,6 +31,7 @@ import FormBloodGlucose from "./FormBloodGlucose";
 
 import requireAuth from "../requireAuth";
 import swal from "sweetalert";
+import { updateCurrentGestation } from "../../services/apiService";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,6 +78,8 @@ const ActualGestation = (props: any): JSX.Element => {
   const [_id, update_Id] = useState<string>("");
   const [buttonLabel, updateBottonLabel] = useState("Save");
   const [patient, updatePatient] = useState<Patient | null>(null);
+  const [currentGestation, updateCurrentGestation] = useState<any | null>(null);
+
   const [activeStep, setActiveStep] = useState(0);
   const [likelyDeliveryDate, updateLikelyDeliveryDate] = useState<Date | null>(
     new Date()
@@ -183,6 +189,7 @@ const ActualGestation = (props: any): JSX.Element => {
     getPatientIdFunction,
     updateHistoryFunction,
     updateCurrentGestationFunction,
+    saveCurrentGestationFunction,
   } = useContext(PatientsContext);
 
   const wait = async (ms: number) => {
@@ -191,7 +198,7 @@ const ActualGestation = (props: any): JSX.Element => {
     });
   };
 
-  const saveCurrentGestation = async () => {
+  const saveCurrentGestation = async (gestation: any) => {
     try {
       updateLoading(true);
       updateErrorStatus(true);
@@ -200,51 +207,11 @@ const ActualGestation = (props: any): JSX.Element => {
       updateLoading(false);
       updateSavedStatus(true);
       let response;
-      let gestation = {
-        idNumber: patient?._id,
-        lastMenstruationDate,
-        size,
-        previousWeight,
-        current,
-        dose1,
-        dose2,
-        dental,
-        mammary,
-        visualInspection,
-        papanicolao,
-        colposcopy,
-        group,
-        positive,
-        antiDGlobulin,
-        toxoplasmosisLessThanTwenty,
-        toxoplasmosisGreaterThanTwenty,
-        toxoplasmosisFirst,
-        vihRequestedLessThanTwenty,
-        vihRequestedGreaterThanTwenty,
-        vihDoneLessThanTwenty,
-        vihDoneGreaterThanTwenty,
-        hemoglobinlessThanTwenty,
-        hemoglobinGreaterThanTwenty,
-        syphilisVDRLLessThanTwenty,
-        syphilisVDRLLessThanTwentyWeeks,
-        syphilisVDRLGreaterThanTwenty,
-        syphilisVDRLGreaterThanTwentyWeeks,
-        syphilisFTALessThanTwenty,
-        syphilisFTALessThanTwentyWeeks,
-        syphilisFTAGreaterThanTwenty,
-        syphilisFTAGreaterThanTwentyWeeks,
-        syphilisTreatmentLessThanTwenty,
-        syphilisTreatmentLessThanTwentyWeeks,
-        syphilisTreatmentGreaterThanTwenty,
-        syphilisTreatmentGreaterThanTwentyWeeks,
-        syphilisPartnerTreatmentLessThanTwenty,
-        syphilisPartnerTreatmentGreaterThanTwenty,
-        bacteriuriaLessThanTwenty,
-        bacteriuriaGreaterThanTwenty,
-        bloodGlucoseLessThanTwenty,
-        bloodGlucoseGreaterThanTwenty,
-      };
-      response = await updateCurrentGestationFunction(gestation);
+      debugger;
+      if (currentGestation) {
+        response = await updateCurrentGestationFunction(gestation);
+      } else response = await saveCurrentGestationFunction(gestation);
+
       if (response.statusText === "OK") {
         updateErrorStatus(false);
       }
@@ -256,13 +223,83 @@ const ActualGestation = (props: any): JSX.Element => {
     }
   };
 
+  const updateFetchedCurrentGestation = (gestation: any) => {
+    updateLikelyDeliveryDate(currentGestation.dateGestation);
+    updateLastMenstruationDate(currentGestation.lastMenstruationDate);
+    updateSize(currentGestation.size);
+    updatePreviousWeight(currentGestation.previousWeight);
+    updateCurrent(currentGestation.current);
+    updateDose1(currentGestation.dose1);
+    updateDose2(currentGestation.dose2);
+    updateDental(currentGestation.dental);
+    updateMammary(currentGestation.mammary);
+    updateVisualInspection(currentGestation.visualInspection);
+    updatePapanicolao(currentGestation.papanicolao);
+    updateColposcopy(currentGestation.colposcopy);
+    updateGroup(currentGestation.group);
+    updatePositive(currentGestation.positive);
+    updateAntiDGlobulin(currentGestation.globulin);
+    updateToxoplasmosisLessThanTwenty(currentGestation.toxoplasmosis);
+    updateToxoplasmosisGreaterThanTwenty(
+      currentGestation.toxoplasmosisGreaterThanTwenty
+    );
+    updateToxoplasmosisFirst(currentGestation.toxoplasmosisFirs);
+    updateVihRequestedLessThanTwenty(
+      currentGestation.vihRequestedLessThanTwenty
+    );
+    updateVihRequestedGreaterThanTwenty(vihRequestedGreaterThanTwenty);
+    updateVihDoneLessThanTwenty(vihDoneLessThanTwenty);
+    updateVihDoneGreaterThanTwenty(vihDoneGreaterThanTwenty);
+    updateHemoglobinLessThanTwenty(hemoglobinlessThanTwenty);
+    updateHemoglobinGreaterThanTwenty(hemoglobinGreaterThanTwenty);
+    // Syphilis
+    updateSyphilisVDRLLessThanTwenty(syphilisVDRLLessThanTwenty);
+    updateSyphilisVDRLLessThanTwentyWeeks(syphilisVDRLLessThanTwentyWeeks);
+    updateSyphilisVDRLGreaterThanTwenty(syphilisVDRLGreaterThanTwenty);
+    updateSyphilisVDRLGreaterThanTwentyWeeks(
+      syphilisVDRLGreaterThanTwentyWeeks
+    );
+    updateSyphilisFTALessThanTwenty(syphilisFTALessThanTwenty);
+    updateSyphilisFTALessThanTwentyWeeks(syphilisFTALessThanTwentyWeeks);
+    updateSyphilisFTAGreaterThanTwenty(syphilisFTAGreaterThanTwenty);
+    updateSyphilisFTAGreaterThanTwentyWeeks(syphilisFTAGreaterThanTwentyWeeks);
+    updateSyphilisTreatmentLessThanTwenty(syphilisTreatmentLessThanTwenty);
+    updateSyphilisTreatmentLessThanTwentyWeeks(
+      syphilisTreatmentLessThanTwentyWeeks
+    );
+    updateSyphilisTreatmentGreaterThanTwenty(
+      syphilisTreatmentGreaterThanTwenty
+    );
+    updateSyphilisTreatmentGreaterThanTwentyWeeks(
+      syphilisTreatmentGreaterThanTwentyWeeks
+    );
+    updateSyphilisPartnerTreatmentLessThanTwenty(
+      syphilisPartnerTreatmentLessThanTwenty
+    );
+    updateSyphilisPartnerTreatmentGreaterThanTwenty(
+      syphilisPartnerTreatmentGreaterThanTwenty
+    );
+    updateBacteriuriaLessThanTwenty(bacteriuriaLessThanTwenty);
+    updateBacteriuriaGreaterThanTwenty(bacteriuriaGreaterThanTwenty);
+    updateBloodGlucoseLessThanTwenty(bloodGlucoseLessThanTwenty);
+    updateBloodGlucoseGreaterThanTwenty(bloodGlucoseGreaterThanTwenty);
+  };
+
   useEffect(() => {
-    if (props.match?.params?.id) getPatient(props.match?.params?.id);
+    if (props.match?.params?.id) {
+      getPatient(props.match?.params?.id);
+      console.log(props.match?.params?.id);
+      getCurrentGestation({ id: props.match?.params?.id });
+    }
   }, []);
 
   useEffect(() => {
     if (patient) update_Id(patient._id);
   }, [patient]);
+
+  useEffect(() => {
+    if (currentGestation) updateFetchedCurrentGestation(currentGestation);
+  }, [currentGestation, updateFetchedCurrentGestation]);
 
   function getStepContent(step: number) {
     switch (step) {
@@ -460,10 +497,23 @@ const ActualGestation = (props: any): JSX.Element => {
     }
   }
 
-  const getPatient: any = async (id: string) => {
+  const getPatient: any = async () => {
+    console.log(_id);
     const patient = await getPatientIdFunction({ id: _id });
-    console.log(patient);
     updatePatient(patient);
+  };
+
+  const getCurrentGestation: any = async () => {
+    console.log(patient);
+    const gestation = await getCurrentGestationFunction({
+      _id: props.match?.params?.id,
+    });
+    console.log(gestation);
+
+    if (gestation) {
+      updateCurrentGestation(gestation);
+      updateBottonLabel("UPDATE");
+    }
   };
 
   const totalSteps = () => {
@@ -533,73 +583,133 @@ const ActualGestation = (props: any): JSX.Element => {
       <Typography variant='h3' align='center' className='GestationTitle'>
         {`Current Gestation ${patient?.name} ${patient?.lastName}`}
       </Typography>
-      <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep} orientation='vertical'>
-          {steps.map((label, index) => {
-            const stepProps: { completed?: boolean } = {};
-            const buttonProps: { optional?: React.ReactNode } = {};
-            if (isStepOptional(index)) {
-              buttonProps.optional = (
-                <Typography variant='caption'>Optional</Typography>
-              );
-            }
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
+      <div>
+        <form
+          className={classes.root}
+          noValidate
+          autoComplete='off'
+          onSubmit={(e) => {
+            e.preventDefault();
 
-            function isStepComplete(step: number) {
-              return completed.has(step);
-            }
+            let gestation = {
+              idNumber: patient?._id,
+              lastMenstruationDate,
+              size,
+              previousWeight,
+              current,
+              dose1,
+              dose2,
+              dental,
+              mammary,
+              visualInspection,
+              papanicolao,
+              colposcopy,
+              group,
+              positive,
+              antiDGlobulin,
+              toxoplasmosisLessThanTwenty,
+              toxoplasmosisGreaterThanTwenty,
+              toxoplasmosisFirst,
+              vihRequestedLessThanTwenty,
+              vihRequestedGreaterThanTwenty,
+              vihDoneLessThanTwenty,
+              vihDoneGreaterThanTwenty,
+              hemoglobinlessThanTwenty,
+              hemoglobinGreaterThanTwenty,
+              syphilisVDRLLessThanTwenty,
+              syphilisVDRLLessThanTwentyWeeks,
+              syphilisVDRLGreaterThanTwenty,
+              syphilisVDRLGreaterThanTwentyWeeks,
+              syphilisFTALessThanTwenty,
+              syphilisFTALessThanTwentyWeeks,
+              syphilisFTAGreaterThanTwenty,
+              syphilisFTAGreaterThanTwentyWeeks,
+              syphilisTreatmentLessThanTwenty,
+              syphilisTreatmentLessThanTwentyWeeks,
+              syphilisTreatmentGreaterThanTwenty,
+              syphilisTreatmentGreaterThanTwentyWeeks,
+              syphilisPartnerTreatmentLessThanTwenty,
+              syphilisPartnerTreatmentGreaterThanTwenty,
+              bacteriuriaLessThanTwenty,
+              bacteriuriaGreaterThanTwenty,
+              bloodGlucoseLessThanTwenty,
+              bloodGlucoseGreaterThanTwenty,
+            };
 
-            return (
-              <Step key={label}>
-                <StepButton
-                  onClick={handleStep(index)}
-                  completed={isStepComplete(index)}
-                  {...buttonProps}
+            saveCurrentGestation(gestation);
+          }}
+        >
+          <div className={classes.root}>
+            <Stepper nonLinear activeStep={activeStep} orientation='vertical'>
+              {steps.map((label, index) => {
+                const stepProps: { completed?: boolean } = {};
+                const buttonProps: { optional?: React.ReactNode } = {};
+                if (isStepOptional(index)) {
+                  buttonProps.optional = (
+                    <Typography variant='caption'>Optional</Typography>
+                  );
+                }
+                if (isStepSkipped(index)) {
+                  stepProps.completed = false;
+                }
+
+                function isStepComplete(step: number) {
+                  return completed.has(step);
+                }
+
+                return (
+                  <Step key={label}>
+                    <StepButton
+                      onClick={handleStep(index)}
+                      completed={isStepComplete(index)}
+                      {...buttonProps}
+                    >
+                      {label}
+                    </StepButton>
+                    <StepContent>
+                      <Typography>{getStepContent(activeStep)}</Typography>
+                    </StepContent>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            {activeStep === steps.length && (
+              <Paper square elevation={0} className={classes.instructions}>
+                <Typography>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Button onClick={handleReset} className={classes.button}>
+                  Reset
+                </Button>
+              </Paper>
+            )}
+          </div>
+
+          <Grid container justify='center' className='Button-Container'>
+            <ButtonGroup>
+              <Link to={{ pathname: `/general/` + _id }} className='Link'>
+                <Button
+                  className='HistoryButton'
+                  type='submit'
+                  variant='contained'
+                  color='primary'
                 >
-                  {label}
-                </StepButton>
-                <StepContent>
-                  <Typography>{getStepContent(activeStep)}</Typography>
-                </StepContent>
-              </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} className={classes.instructions}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
-            </Button>
-          </Paper>
-        )}
+                  History
+                </Button>
+              </Link>
+              <Button
+                className='HistoryButton'
+                type='submit'
+                variant='contained'
+                color='primary'
+                onClick={saveCurrentGestation}
+              >
+                {buttonLabel}
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </form>
       </div>
-
-      <Grid container justify='center' className='Button-Container'>
-        <ButtonGroup>
-          <Link to={{ pathname: `/general/` + _id }} className='Link'>
-            <Button
-              className='HistoryButton'
-              type='submit'
-              variant='contained'
-              color='primary'
-            >
-              History
-            </Button>
-          </Link>
-          <Button
-            className='HistoryButton'
-            type='submit'
-            variant='contained'
-            color='primary'
-            onClick={saveCurrentGestation}
-          >
-            {buttonLabel}
-          </Button>
-        </ButtonGroup>
-      </Grid>
     </Fragment>
   );
 };

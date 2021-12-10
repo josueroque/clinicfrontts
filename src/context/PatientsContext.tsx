@@ -2,24 +2,26 @@ import React, { createContext, useState, useEffect, Context } from "react";
 import {
   savePatient,
   saveHistory,
+  saveCurrentGestation,
   getPatients,
   getPatientId,
-  updatePatient,
   getHistoryId,
+  getCurrentGestation,
+  updatePatient,
   updateHistory,
   updateCurrentGestation,
-  getCurrentGestation,
 } from "../services/apiService";
 
 export const PatientsContext = createContext<Partial<any>>({});
 export const savePatientFunction = savePatient;
 export const saveHistoryFunction = saveHistory;
+export const saveCurrentGestationFunction = saveCurrentGestation;
 export const getPatientsFunction = getPatients;
 export const updatePatientFunction = updatePatient;
-export const getPatientIdFunction = getPatientId;
-export const getHistoryIdFunction = getHistoryId;
 export const updateHistoryFunction = updateHistory;
 export const updateCurrentGestationFunction = updateCurrentGestation;
+export const getPatientIdFunction = getPatientId;
+export const getHistoryIdFunction = getHistoryId;
 export const getCurrentGestationFunction = getCurrentGestation;
 
 const PatientsProvider = (props: any) => {
@@ -28,10 +30,12 @@ const PatientsProvider = (props: any) => {
       value={{
         savePatientFunction,
         saveHistoryFunction,
+        saveCurrentGestationFunction,
         getPatientsFunction,
-        updatePatientFunction,
         getPatientIdFunction,
         getHistoryIdFunction,
+        getCurrentGestationFunction,
+        updatePatientFunction,
         updateHistoryFunction,
         updateCurrentGestationFunction,
       }}

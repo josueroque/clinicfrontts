@@ -111,7 +111,6 @@ export default function Sidebar() {
   const handleClick = () => {
     setOpenNested(!openNested);
   };
-  console.log(auth);
   return (
     <Fragment>
       <div className={classes.root}>

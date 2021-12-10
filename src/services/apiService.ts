@@ -83,8 +83,8 @@ export async function getPatientId(patient: any) {
 
 export async function getCurrentGestation(patient: any) {
   try {
-    let requestUrl = apiUrl + "currentGestation/" + patient._id;
-
+    let requestUrl = apiUrl + "actualGestation?_id=" + patient._id;
+    console.log(patient);
     const response = await axios.get(requestUrl);
     if (response.statusText !== "OK") {
       throw new Error("Error fetching patient");
@@ -165,12 +165,13 @@ export async function updateCurrentGestation(patient: any) {
   }
 }
 
-export async function saveCurrentGestation(patient: any) {
+export async function saveCurrentGestation(gestation: any) {
   try {
-    const requestUrl = apiUrl + "actualGestation/" + patient._id;
-    const response = await axios.post(requestUrl, patient);
+    const requestUrl = apiUrl + "actualGestation";
+    const response = await axios.post(requestUrl, gestation);
     if (response.statusText !== "OK") {
-      throw new Error("Error updating patient");
+      throw new Error("Error saving current gestation");
+      //return {state:'errored',message:'Error saving patient'};
     }
 
     return response;
