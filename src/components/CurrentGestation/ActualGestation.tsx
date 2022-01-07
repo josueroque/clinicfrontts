@@ -1,13 +1,18 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+} from "react";
 import { Link } from "react-router-dom";
-import { Grid, Button, ButtonGroup } from "@material-ui/core";
+import { Grid, Button, ButtonGroup, AppBar } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import StepButton from "@material-ui/core/StepButton";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
-import Paper from "@material-ui/core/Paper";
+
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Box from "@material-ui/core/Box";
+
 import {
   getCurrentGestationFunction,
   PatientsContext,
@@ -32,47 +37,15 @@ import FormBloodGlucose from "./FormBloodGlucose";
 import requireAuth from "../requireAuth";
 import swal from "sweetalert";
 import { updateCurrentGestation } from "../../services/apiService";
+import GeneralInfo from "../GeneralInfo";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%",
-    },
-    button: {
-      marginTop: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    actionsContainer: {
-      marginBottom: theme.spacing(2),
-    },
-    resetContainer: {
-      padding: theme.spacing(3),
-    },
-    instructions: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-    completed: {
-      display: "inline-block",
-    },
-  })
-);
-
-function getSteps() {
-  return [
-    "General Data",
-    "Antitetanic",
-    "Visual Inspeccion",
-    "Cervix",
-    "Group",
-    "Toxoplasmosis",
-    "VIH",
-    "Hemoglobin",
-    "Syphilis",
-    "Bacteriruria",
-    "Blood Glocose",
-  ];
-}
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
 const ActualGestation = (props: any): JSX.Element => {
   const [_id, update_Id] = useState<string>("");
@@ -178,133 +151,47 @@ const ActualGestation = (props: any): JSX.Element => {
   const [savedStatus, updateSavedStatus] = useState(false);
   const [updating, updateUpdating] = useState(false);
 
-  const [completed, setCompleted] = React.useState(new Set<number>());
-  const [skipped, setSkipped] = React.useState(new Set<number>());
-
   const classes = useStyles();
-  const steps = getSteps();
+  const [value, setValue] = React.useState(0);
 
-  const {
-    getHistoryIdFunction,
-    getPatientIdFunction,
-    updateHistoryFunction,
-    updateCurrentGestationFunction,
-    saveCurrentGestationFunction,
-  } = useContext(PatientsContext);
-
-  const wait = async (ms: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
   };
 
-  const saveCurrentGestation = async (gestation: any) => {
-    try {
-      updateLoading(true);
-      updateErrorStatus(true);
-      updateSavedStatus(false);
-      await wait(1000);
-      updateLoading(false);
-      updateSavedStatus(true);
-      let response;
-      debugger;
-      if (currentGestation) {
-        response = await updateCurrentGestationFunction(gestation);
-      } else response = await saveCurrentGestationFunction(gestation);
+  const ScrollableTabsButtonAuto = () => {
+    const classes = useStyles();
+    const [value, setValue] = React.useState(0);
 
-      if (response.statusText === "OK") {
-        updateErrorStatus(false);
-      }
-      await wait(1000);
-    } catch (error: any) {
-      swal("Something has failed!", error.toString(), "error");
-      updateSavedStatus(true);
-      updateErrorStatus(true);
-    }
-  };
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+      setValue(newValue);
+    };
 
-  const updateFetchedCurrentGestation = (gestation: any) => {
-    updateLikelyDeliveryDate(currentGestation.dateGestation);
-    updateLastMenstruationDate(currentGestation.lastMenstruationDate);
-    updateSize(currentGestation.size);
-    updatePreviousWeight(currentGestation.previousWeight);
-    updateCurrent(currentGestation.current);
-    updateDose1(currentGestation.dose1);
-    updateDose2(currentGestation.dose2);
-    updateDental(currentGestation.dental);
-    updateMammary(currentGestation.mammary);
-    updateVisualInspection(currentGestation.visualInspection);
-    updatePapanicolao(currentGestation.papanicolao);
-    updateColposcopy(currentGestation.colposcopy);
-    updateGroup(currentGestation.group);
-    updatePositive(currentGestation.positive);
-    updateAntiDGlobulin(currentGestation.globulin);
-    updateToxoplasmosisLessThanTwenty(currentGestation.toxoplasmosis);
-    updateToxoplasmosisGreaterThanTwenty(
-      currentGestation.toxoplasmosisGreaterThanTwenty
-    );
-    updateToxoplasmosisFirst(currentGestation.toxoplasmosisFirs);
-    updateVihRequestedLessThanTwenty(
-      currentGestation.vihRequestedLessThanTwenty
-    );
-    updateVihRequestedGreaterThanTwenty(vihRequestedGreaterThanTwenty);
-    updateVihDoneLessThanTwenty(vihDoneLessThanTwenty);
-    updateVihDoneGreaterThanTwenty(vihDoneGreaterThanTwenty);
-    updateHemoglobinLessThanTwenty(hemoglobinlessThanTwenty);
-    updateHemoglobinGreaterThanTwenty(hemoglobinGreaterThanTwenty);
-    // Syphilis
-    updateSyphilisVDRLLessThanTwenty(syphilisVDRLLessThanTwenty);
-    updateSyphilisVDRLLessThanTwentyWeeks(syphilisVDRLLessThanTwentyWeeks);
-    updateSyphilisVDRLGreaterThanTwenty(syphilisVDRLGreaterThanTwenty);
-    updateSyphilisVDRLGreaterThanTwentyWeeks(
-      syphilisVDRLGreaterThanTwentyWeeks
-    );
-    updateSyphilisFTALessThanTwenty(syphilisFTALessThanTwenty);
-    updateSyphilisFTALessThanTwentyWeeks(syphilisFTALessThanTwentyWeeks);
-    updateSyphilisFTAGreaterThanTwenty(syphilisFTAGreaterThanTwenty);
-    updateSyphilisFTAGreaterThanTwentyWeeks(syphilisFTAGreaterThanTwentyWeeks);
-    updateSyphilisTreatmentLessThanTwenty(syphilisTreatmentLessThanTwenty);
-    updateSyphilisTreatmentLessThanTwentyWeeks(
-      syphilisTreatmentLessThanTwentyWeeks
-    );
-    updateSyphilisTreatmentGreaterThanTwenty(
-      syphilisTreatmentGreaterThanTwenty
-    );
-    updateSyphilisTreatmentGreaterThanTwentyWeeks(
-      syphilisTreatmentGreaterThanTwentyWeeks
-    );
-    updateSyphilisPartnerTreatmentLessThanTwenty(
-      syphilisPartnerTreatmentLessThanTwenty
-    );
-    updateSyphilisPartnerTreatmentGreaterThanTwenty(
-      syphilisPartnerTreatmentGreaterThanTwenty
-    );
-    updateBacteriuriaLessThanTwenty(bacteriuriaLessThanTwenty);
-    updateBacteriuriaGreaterThanTwenty(bacteriuriaGreaterThanTwenty);
-    updateBloodGlucoseLessThanTwenty(bloodGlucoseLessThanTwenty);
-    updateBloodGlucoseGreaterThanTwenty(bloodGlucoseGreaterThanTwenty);
-  };
-
-  useEffect(() => {
-    if (props.match?.params?.id) {
-      getPatient(props.match?.params?.id);
-      console.log(props.match?.params?.id);
-      getCurrentGestation({ id: props.match?.params?.id });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (patient) update_Id(patient._id);
-  }, [patient]);
-
-  useEffect(() => {
-    if (currentGestation) updateFetchedCurrentGestation(currentGestation);
-  }, [currentGestation, updateFetchedCurrentGestation]);
-
-  function getStepContent(step: number) {
-    switch (step) {
-      case 0:
-        return (
+    return (
+      <div className={classes.root}>
+        <AppBar position='static' color='default'>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor='primary'
+            textColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
+            aria-label='scrollable auto tabs example'
+          >
+            <Tab label='General' {...a11yProps(0)} />
+            <Tab label='Antitetanic' {...a11yProps(1)} />
+            <Tab label='Visual Inspeccion' {...a11yProps(2)} />
+            <Tab label='Cervix' {...a11yProps(3)} />
+            <Tab label='Group' {...a11yProps(4)} />
+            <Tab label='Toxoplasmosis' {...a11yProps(5)} />
+            <Tab label='VIH' {...a11yProps(6)} />
+            <Tab label='Hemoglobin' {...a11yProps(7)} />
+            <Tab label='Syphilis' {...a11yProps(8)} />
+            <Tab label='Bacteriruria' {...a11yProps(9)} />
+            <Tab label='Blood Glocose' {...a11yProps(10)} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0}>
           <FormGeneral
             likelyDeliveryDate={likelyDeliveryDate}
             size={size}
@@ -315,9 +202,8 @@ const ActualGestation = (props: any): JSX.Element => {
             updatePreviousWeight={updatePreviousWeight}
             updateLastMenstruationDate={updateLastMenstruationDate}
           />
-        );
-      case 1:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={1}>
           <FormAntitetanic
             current={current}
             dose1={dose1}
@@ -326,18 +212,16 @@ const ActualGestation = (props: any): JSX.Element => {
             updateDose1={updateDose1}
             updateDose2={updateDose2}
           />
-        );
-      case 2:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={2}>
           <FormNormalExam
             dental={dental}
             mammary={mammary}
             updateDental={updateDental}
             updateMammary={updateMammary}
           />
-        );
-      case 3:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={3}>
           <FormCervix
             visualInspection={visualInspection}
             papanicolao={papanicolao}
@@ -346,9 +230,8 @@ const ActualGestation = (props: any): JSX.Element => {
             updatePapanicolao={updatePapanicolao}
             updateColposcopy={updateColposcopy}
           />
-        );
-      case 4:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={4}>
           <FormGroup
             group={group}
             positive={positive}
@@ -357,9 +240,8 @@ const ActualGestation = (props: any): JSX.Element => {
             updatePositive={updatePositive}
             updateAntiDGlobulin={updateAntiDGlobulin}
           />
-        );
-      case 5:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={5}>
           <FormToxoplasmosis
             toxoplasmosisLessThanTwenty={toxoplasmosisLessThanTwenty}
             toxoplasmosisGreaterThanTwenty={toxoplasmosisGreaterThanTwenty}
@@ -372,9 +254,8 @@ const ActualGestation = (props: any): JSX.Element => {
             }
             updateToxoplasmosisFirst={updateToxoplasmosisFirst}
           />
-        );
-      case 6:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={6}>
           <FormVIH
             vihRequestedLessThanTwenty={vihRequestedLessThanTwenty}
             vihRequestedGreaterThanTwenty={vihRequestedGreaterThanTwenty}
@@ -387,9 +268,8 @@ const ActualGestation = (props: any): JSX.Element => {
             updateVihDoneLessThanTwenty={updateVihDoneLessThanTwenty}
             updateVihDoneGreaterThanTwenty={updateVihDoneGreaterThanTwenty}
           />
-        );
-      case 7:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={7}>
           <FormHemoglobin
             hemoglobinLessThanTwenty={hemoglobinlessThanTwenty}
             hemoglobinGreaterThanTwenty={hemoglobinGreaterThanTwenty}
@@ -398,9 +278,8 @@ const ActualGestation = (props: any): JSX.Element => {
               updateHemoglobinGreaterThanTwenty
             }
           />
-        );
-      case 8:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={8}>
           <FormSyphilis
             syphilisVDRLLessThanTwenty={syphilisVDRLLessThanTwenty}
             syphilisVDRLLessThanTwentyWeeks={syphilisVDRLLessThanTwentyWeeks}
@@ -469,9 +348,8 @@ const ActualGestation = (props: any): JSX.Element => {
               updateSyphilisPartnerTreatmentGreaterThanTwenty
             }
           />
-        );
-      case 9:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={9}>
           <FormBacteriuria
             bateriuriaLessThatTwenty={bacteriuriaLessThanTwenty}
             bacteriuriaGreaterThanTwenty={bacteriuriaGreaterThanTwenty}
@@ -480,9 +358,8 @@ const ActualGestation = (props: any): JSX.Element => {
               updateBacteriuriaGreaterThanTwenty
             }
           />
-        );
-      case 10:
-        return (
+        </TabPanel>
+        <TabPanel value={value} index={10}>
           <FormBloodGlucose
             bloodGlucoseLessThanTwenty={bloodGlucoseLessThanTwenty}
             bloodGlucoseGreaterThanTwenty={bloodGlucoseGreaterThanTwenty}
@@ -491,11 +368,131 @@ const ActualGestation = (props: any): JSX.Element => {
               updateBloodGlucoseGreaterThanTwenty
             }
           />
-        );
-      default:
-        return "Unknown step";
+        </TabPanel>
+      </div>
+    );
+  };
+
+  const {
+    getHistoryIdFunction,
+    getPatientIdFunction,
+    updateHistoryFunction,
+    updateCurrentGestationFunction,
+    saveCurrentGestationFunction,
+  } = useContext(PatientsContext);
+
+  const wait = async (ms: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  };
+
+  const saveCurrentGestation = async (gestation: any) => {
+    try {
+      updateLoading(true);
+      updateErrorStatus(true);
+      updateSavedStatus(false);
+      await wait(1000);
+      updateLoading(false);
+      updateSavedStatus(true);
+      let response;
+      debugger;
+      if (currentGestation) {
+        response = await updateCurrentGestationFunction(gestation);
+      } else response = await saveCurrentGestationFunction(gestation);
+
+      if (response.statusText === "OK") {
+        updateErrorStatus(false);
+      }
+      await wait(1000);
+    } catch (error: any) {
+      swal("Something has failed!", error.toString(), "error");
+      updateSavedStatus(true);
+      updateErrorStatus(true);
     }
-  }
+  };
+
+  const updateFetchedCurrentGestation = useCallback((gestation: any) => {
+    if (currentGestation) {
+      updateLikelyDeliveryDate(currentGestation.dateGestation);
+      updateLastMenstruationDate(currentGestation.lastMenstruationDate);
+      updateSize(currentGestation.size);
+      updatePreviousWeight(currentGestation.previousWeight);
+      updateCurrent(currentGestation.current);
+      updateDose1(currentGestation.dose1);
+      updateDose2(currentGestation.dose2);
+      updateDental(currentGestation.dental);
+      updateMammary(currentGestation.mammary);
+      updateVisualInspection(currentGestation.visualInspection);
+      updatePapanicolao(currentGestation.papanicolao);
+      updateColposcopy(currentGestation.colposcopy);
+      updateGroup(currentGestation.group);
+      updatePositive(currentGestation.positive);
+      updateAntiDGlobulin(currentGestation.globulin);
+      updateToxoplasmosisLessThanTwenty(currentGestation.toxoplasmosis);
+      updateToxoplasmosisGreaterThanTwenty(
+        currentGestation.toxoplasmosisGreaterThanTwenty
+      );
+      updateToxoplasmosisFirst(currentGestation.toxoplasmosisFirs);
+      updateVihRequestedLessThanTwenty(
+        currentGestation.vihRequestedLessThanTwenty
+      );
+      updateVihRequestedGreaterThanTwenty(vihRequestedGreaterThanTwenty);
+      updateVihDoneLessThanTwenty(vihDoneLessThanTwenty);
+      updateVihDoneGreaterThanTwenty(vihDoneGreaterThanTwenty);
+      updateHemoglobinLessThanTwenty(hemoglobinlessThanTwenty);
+      updateHemoglobinGreaterThanTwenty(hemoglobinGreaterThanTwenty);
+      // Syphilis
+      updateSyphilisVDRLLessThanTwenty(syphilisVDRLLessThanTwenty);
+      updateSyphilisVDRLLessThanTwentyWeeks(syphilisVDRLLessThanTwentyWeeks);
+      updateSyphilisVDRLGreaterThanTwenty(syphilisVDRLGreaterThanTwenty);
+      updateSyphilisVDRLGreaterThanTwentyWeeks(
+        syphilisVDRLGreaterThanTwentyWeeks
+      );
+      updateSyphilisFTALessThanTwenty(syphilisFTALessThanTwenty);
+      updateSyphilisFTALessThanTwentyWeeks(syphilisFTALessThanTwentyWeeks);
+      updateSyphilisFTAGreaterThanTwenty(syphilisFTAGreaterThanTwenty);
+      updateSyphilisFTAGreaterThanTwentyWeeks(
+        syphilisFTAGreaterThanTwentyWeeks
+      );
+      updateSyphilisTreatmentLessThanTwenty(syphilisTreatmentLessThanTwenty);
+      updateSyphilisTreatmentLessThanTwentyWeeks(
+        syphilisTreatmentLessThanTwentyWeeks
+      );
+      updateSyphilisTreatmentGreaterThanTwenty(
+        syphilisTreatmentGreaterThanTwenty
+      );
+      updateSyphilisTreatmentGreaterThanTwentyWeeks(
+        syphilisTreatmentGreaterThanTwentyWeeks
+      );
+      updateSyphilisPartnerTreatmentLessThanTwenty(
+        syphilisPartnerTreatmentLessThanTwenty
+      );
+      updateSyphilisPartnerTreatmentGreaterThanTwenty(
+        syphilisPartnerTreatmentGreaterThanTwenty
+      );
+      updateBacteriuriaLessThanTwenty(bacteriuriaLessThanTwenty);
+      updateBacteriuriaGreaterThanTwenty(bacteriuriaGreaterThanTwenty);
+      updateBloodGlucoseLessThanTwenty(bloodGlucoseLessThanTwenty);
+      updateBloodGlucoseGreaterThanTwenty(bloodGlucoseGreaterThanTwenty);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.match?.params?.id) {
+      getPatient(props.match?.params?.id);
+      console.log(props.match?.params?.id);
+      getCurrentGestation({ id: props.match?.params?.id });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (patient) update_Id(patient._id);
+  }, [patient]);
+
+  useEffect(() => {
+    if (currentGestation) updateFetchedCurrentGestation(currentGestation);
+  }, [currentGestation, updateFetchedCurrentGestation]);
 
   const getPatient: any = async () => {
     console.log(_id);
@@ -516,71 +513,43 @@ const ActualGestation = (props: any): JSX.Element => {
     }
   };
 
-  const totalSteps = () => {
-    return steps.length;
-  };
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+  }
 
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
+  function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
 
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
+    return (
+      <div
+        role='tabpanel'
+        hidden={value !== index}
+        id={`scrollable-auto-tabpanel-${index}`}
+        aria-labelledby={`scrollable-auto-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
 
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
-
-  const skippedSteps = () => {
-    return skipped.size;
-  };
-
-  const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
-  };
-
-  const handleComplete = () => {
-    const newCompleted = new Set(completed);
-    newCompleted.add(activeStep);
-    setCompleted(newCompleted);
-
-    /**
-     * Sigh... it would be much nicer to replace the following if conditional with
-     * `if (!this.allStepsComplete())` however state is not set when we do this,
-     * thus we have to resort to not being very DRY.
-     */
-    if (completed.size !== totalSteps() - skippedSteps()) {
-      handleNext();
-    }
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const isStepOptional = (step: number) => {
-    return null;
-  };
-
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
+  function a11yProps(index: any) {
+    return {
+      id: `scrollable-auto-tab-${index}`,
+      "aria-controls": `scrollable-auto-tabpanel-${index}`,
+    };
+  }
 
   return (
     <Fragment>
       <Sidebar></Sidebar>
-      <Typography variant='h3' align='center' className='GestationTitle'>
+      <Typography variant='h4' align='center' className='GestationTitle'>
         {`Current Gestation ${patient?.name} ${patient?.lastName}`}
       </Typography>
       <div>
@@ -639,52 +608,9 @@ const ActualGestation = (props: any): JSX.Element => {
             saveCurrentGestation(gestation);
           }}
         >
-          <div className={classes.root}>
-            <Stepper nonLinear activeStep={activeStep} orientation='vertical'>
-              {steps.map((label, index) => {
-                const stepProps: { completed?: boolean } = {};
-                const buttonProps: { optional?: React.ReactNode } = {};
-                if (isStepOptional(index)) {
-                  buttonProps.optional = (
-                    <Typography variant='caption'>Optional</Typography>
-                  );
-                }
-                if (isStepSkipped(index)) {
-                  stepProps.completed = false;
-                }
-
-                function isStepComplete(step: number) {
-                  return completed.has(step);
-                }
-
-                return (
-                  <Step key={label}>
-                    <StepButton
-                      onClick={handleStep(index)}
-                      completed={isStepComplete(index)}
-                      {...buttonProps}
-                    >
-                      {label}
-                    </StepButton>
-                    <StepContent>
-                      <Typography>{getStepContent(activeStep)}</Typography>
-                    </StepContent>
-                  </Step>
-                );
-              })}
-            </Stepper>
-            {activeStep === steps.length && (
-              <Paper square elevation={0} className={classes.instructions}>
-                <Typography>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={handleReset} className={classes.button}>
-                  Reset
-                </Button>
-              </Paper>
-            )}
+          <div style={{ marginTop: "20vh !important" }}>
+            <ScrollableTabsButtonAuto />
           </div>
-
           <Grid container justify='center' className='Button-Container'>
             <ButtonGroup>
               <Link to={{ pathname: `/general/` + _id }} className='Link'>
