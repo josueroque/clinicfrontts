@@ -15,7 +15,6 @@ export const setAuthFunction = async (user: any) => {
 };
 
 export const logoutFunction = async (user: any) => {
-  auth.token = null; // console.log(auth);
   return;
 };
 

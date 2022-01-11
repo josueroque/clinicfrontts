@@ -1,10 +1,16 @@
 import React from "react";
 import { hemoglobinProps as iHemoglobinProps } from "../../interfaces/currentGestations";
-import { Container, FormControl, TextField } from "@material-ui/core";
+import { Grid, FormControl, TextField } from "@material-ui/core";
 const FormHemoglobin = (props: iHemoglobinProps) => {
   return (
     <div>
-      <Container>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+      >
         <FormControl>
           <TextField
             type='number'
@@ -35,7 +41,7 @@ const FormHemoglobin = (props: iHemoglobinProps) => {
             }}
           />
         </FormControl>
-      </Container>
+      </Grid>
     </div>
   );
 };

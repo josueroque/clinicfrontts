@@ -12,7 +12,6 @@ export async function saveUser(user: any) {
 
     return response;
   } catch (error: any) {
-    console.log(error.response);
     throw error.response;
   }
 }
@@ -84,7 +83,6 @@ export async function getPatientId(patient: any) {
 export async function getCurrentGestation(patient: any) {
   try {
     let requestUrl = apiUrl + "actualGestation?_id=" + patient._id;
-    console.log(patient);
     const response = await axios.get(requestUrl);
     if (response.statusText !== "OK") {
       throw new Error("Error fetching patient");

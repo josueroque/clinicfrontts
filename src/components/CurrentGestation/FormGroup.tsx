@@ -1,6 +1,5 @@
 import { groupProps as iFormGroupProps } from "../../interfaces/currentGestations";
 import {
-  Container,
   FormControl,
   Select,
   InputLabel,
@@ -9,11 +8,18 @@ import {
   Radio,
   FormControlLabel,
   FormLabel,
+  Grid,
 } from "@material-ui/core";
 const FormGroup = (props: iFormGroupProps) => {
   return (
     <div>
-      <Container className='StepContent'>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+      >
         <FormControl className='Select-Group'>
           <InputLabel>Group</InputLabel>
           <Select>
@@ -89,7 +95,7 @@ const FormGroup = (props: iFormGroupProps) => {
             />
           </RadioGroup>
         </FormControl>
-      </Container>
+      </Grid>
     </div>
   );
 };

@@ -1,18 +1,25 @@
 import React from "react";
 import { bateriuriaProps as iBacteriuriaProps } from "../../interfaces/currentGestations";
 import {
-  Container,
   FormControl,
   RadioGroup,
   Radio,
   FormControlLabel,
   FormLabel,
+  Grid,
 } from "@material-ui/core";
 
 const FormToxoplasmosis = (props: iBacteriuriaProps) => {
   return (
-    <div>
-      <Container>
+    <>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+        className='SyphilisContainer'
+      >
         <FormControl>
           <FormLabel component='legend'>Less than 20 weeks</FormLabel>
           <RadioGroup
@@ -78,8 +85,8 @@ const FormToxoplasmosis = (props: iBacteriuriaProps) => {
             />
           </RadioGroup>
         </FormControl>
-      </Container>
-    </div>
+      </Grid>
+    </>
   );
 };
 

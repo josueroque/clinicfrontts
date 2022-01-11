@@ -1,7 +1,7 @@
 import React from "react";
 import { toxoplasmosisProps as iToxoplasmosisProps } from "../../interfaces/currentGestations";
 import {
-  Container,
+  Grid,
   FormControl,
   RadioGroup,
   Radio,
@@ -12,7 +12,13 @@ import {
 const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
   return (
     <div>
-      <Container>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+      >
         <FormControl>
           <FormLabel component='legend'>Less than 20 weeks</FormLabel>
           <RadioGroup
@@ -110,7 +116,7 @@ const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
             />
           </RadioGroup>
         </FormControl>
-      </Container>
+      </Grid>
     </div>
   );
 };

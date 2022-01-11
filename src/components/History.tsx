@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useState,
-  useContext,
-  useEffect,
-  ReactType,
-} from "react";
+import React, { Fragment, useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Container,
@@ -876,7 +870,7 @@ function History(props: any) {
                     {buttonLabel}{" "}
                   </Button>
                   <Link
-                    to={{ pathname: `/actualgestation/` + _id }}
+                    to={{ pathname: `/currentgestation/` + _id }}
                     className='Link'
                   >
                     <Button

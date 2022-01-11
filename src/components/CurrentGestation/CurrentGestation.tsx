@@ -47,13 +47,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ActualGestation = (props: any): JSX.Element => {
+const CurrentGestation = (props: any): JSX.Element => {
   const [_id, update_Id] = useState<string>("");
   const [buttonLabel, updateBottonLabel] = useState("Save");
   const [patient, updatePatient] = useState<Patient | null>(null);
   const [currentGestation, updateCurrentGestation] = useState<any | null>(null);
 
-  const [activeStep, setActiveStep] = useState(0);
   const [likelyDeliveryDate, updateLikelyDeliveryDate] = useState<Date | null>(
     new Date()
   );
@@ -151,20 +150,17 @@ const ActualGestation = (props: any): JSX.Element => {
   const [savedStatus, updateSavedStatus] = useState(false);
   const [updating, updateUpdating] = useState(false);
 
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    console.log(newValue);
     setValue(newValue);
   };
 
+  const classes = useStyles();
+
   const ScrollableTabsButtonAuto = () => {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-      setValue(newValue);
-    };
 
     return (
       <div className={classes.root}>
@@ -481,7 +477,7 @@ const ActualGestation = (props: any): JSX.Element => {
   useEffect(() => {
     if (props.match?.params?.id) {
       getPatient(props.match?.params?.id);
-      console.log(props.match?.params?.id);
+
       getCurrentGestation({ id: props.match?.params?.id });
     }
   }, []);
@@ -495,17 +491,14 @@ const ActualGestation = (props: any): JSX.Element => {
   }, [currentGestation, updateFetchedCurrentGestation]);
 
   const getPatient: any = async () => {
-    console.log(_id);
     const patient = await getPatientIdFunction({ id: _id });
     updatePatient(patient);
   };
 
   const getCurrentGestation: any = async () => {
-    console.log(patient);
     const gestation = await getCurrentGestationFunction({
       _id: props.match?.params?.id,
     });
-    console.log(gestation);
 
     if (gestation) {
       updateCurrentGestation(gestation);
@@ -550,7 +543,7 @@ const ActualGestation = (props: any): JSX.Element => {
     <Fragment>
       <Sidebar></Sidebar>
       <Typography variant='h4' align='center' className='GestationTitle'>
-        {`Current Gestation ${patient?.name} ${patient?.lastName}`}
+        {`Current Gestation ${patient?.name} ${patient?.lastName} `}
       </Typography>
       <div>
         <form
@@ -640,4 +633,4 @@ const ActualGestation = (props: any): JSX.Element => {
   );
 };
 
-export default requireAuth(ActualGestation);
+export default requireAuth(CurrentGestation);

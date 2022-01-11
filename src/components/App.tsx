@@ -4,7 +4,7 @@ import Home from "./Home";
 import History from "./History";
 import Search from "./Search";
 import Login from "./Login";
-import ActualGestation from "./CurrentGestation";
+import CurrentGestation from "./CurrentGestation";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PatientsProvider from "../context/PatientsContext";
 import UsersProvider from "../context/UsersContext";
@@ -33,8 +33,8 @@ function App() {
               <Route exact path='/history/:id' component={History} />
               <Route
                 exact
-                path='/actualgestation/:id'
-                component={ActualGestation}
+                path='/currentgestation/:id'
+                component={CurrentGestation}
               />
               <Route exact path='/general/:id' component={GeneralInfo} />
               <Route exact path='/general' component={GeneralInfo} />

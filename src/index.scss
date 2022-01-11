@@ -100,7 +100,7 @@ h3.form-title {
 }
 
 .GestationTitle {
-  margin-top: 6vw !important;
+  margin-top: 4vw !important;
   margin-bottom: 0vh !important;
   color: $primary;
 }
@@ -273,7 +273,11 @@ h1.login {
 }
 
 .SyphilisContainer {
-  margin-top: 2vh;
+  margin-top: 1vh;
+}
+
+.SyphilisMainContainer {
+  margin: 0 auto !important;
 }
 
 .FormTextSyphilisGreater {

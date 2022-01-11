@@ -1,17 +1,23 @@
 import {
-  Container,
   FormControl,
   RadioGroup,
   Radio,
   FormControlLabel,
   FormLabel,
+  Grid,
 } from "@material-ui/core";
 import { cervixProps as iCervixProps } from "../../interfaces/currentGestations";
 
 const FormCervix = (props: iCervixProps) => {
   return (
     <div>
-      <Container className='StepContent'>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+      >
         <FormControl>
           <FormLabel className='RadioLabel' component='legend'>
             Visual Inspection
@@ -111,7 +117,7 @@ const FormCervix = (props: iCervixProps) => {
             />
           </RadioGroup>
         </FormControl>
-      </Container>
+      </Grid>
     </div>
   );
 };

@@ -10,7 +10,13 @@ import { formGeneralProps as iFormGeneralProps } from "../../interfaces/currentG
 const FormGeneral = (props: iFormGeneralProps) => {
   return (
     <div>
-      <Container>
+      <Grid
+        container
+        spacing={0}
+        direction='row'
+        alignItems='center'
+        justify='center'
+      >
         <FormControl>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container justify='flex-start'>
@@ -25,6 +31,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
+                style={{ width: 300 }}
               />
             </Grid>
           </MuiPickersUtilsProvider>
@@ -43,6 +50,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
+                style={{ width: 300 }}
               />
             </Grid>
           </MuiPickersUtilsProvider>
@@ -59,6 +67,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               props.updateSize(parseFloat(e.target.value));
             }}
+            style={{ width: 300 }}
           />
         </FormControl>
         <FormControl>
@@ -73,9 +82,10 @@ const FormGeneral = (props: iFormGeneralProps) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               props.updatePreviousWeight(parseFloat(e.target.value));
             }}
+            style={{ width: 300 }}
           />
         </FormControl>
-      </Container>
+      </Grid>
     </div>
   );
 };

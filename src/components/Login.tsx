@@ -46,9 +46,8 @@ function Login(props: any) {
           };
 
           await setAuthFunction(loginUser);
-          //  console.log(auth);
+
           updateUser(loginUser);
-          //    console.log(response);
         }}
       >
         <Container className='loginContainer'>
