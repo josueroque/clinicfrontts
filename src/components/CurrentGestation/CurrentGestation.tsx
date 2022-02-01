@@ -392,7 +392,6 @@ const CurrentGestation = (props: any): JSX.Element => {
       updateLoading(false);
       updateSavedStatus(true);
       let response;
-      debugger;
       if (currentGestation) {
         response = await updateCurrentGestationFunction(gestation);
       } else response = await saveCurrentGestationFunction(gestation);
@@ -400,7 +399,9 @@ const CurrentGestation = (props: any): JSX.Element => {
       if (response.statusText === "OK") {
         updateErrorStatus(false);
       }
+      console.log(response);
       await wait(1000);
+      swal("Changes has been saved!", "", "success");
     } catch (error: any) {
       swal("Something has failed!", error.toString(), "error");
       updateSavedStatus(true);
@@ -475,6 +476,7 @@ const CurrentGestation = (props: any): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    console.log(props.match?.params?.id);
     if (props.match?.params?.id) {
       getPatient(props.match?.params?.id);
 
@@ -539,6 +541,13 @@ const CurrentGestation = (props: any): JSX.Element => {
     };
   }
 
+  const toBoolean = (value: string | null): boolean | null | undefined => {
+    if (value === "" || value === null) return null;
+    if (value.toUpperCase() === "true") return true;
+    if (value.toLowerCase() === "false") return false;
+    return undefined;
+  };
+  console.log(patient);
   return (
     <Fragment>
       <Sidebar></Sidebar>
@@ -552,48 +561,69 @@ const CurrentGestation = (props: any): JSX.Element => {
           autoComplete='off'
           onSubmit={(e) => {
             e.preventDefault();
-
+            console.log(patient);
             let gestation = {
-              idNumber: patient?._id,
+              _id: patient?._id,
+              idNumber: patient?.idNumber,
               lastMenstruationDate,
               size,
               previousWeight,
               current,
               dose1,
               dose2,
-              dental,
-              mammary,
-              visualInspection,
-              papanicolao,
-              colposcopy,
+              dental: toBoolean(dental),
+              mammary: toBoolean(mammary),
+              visualInspection: toBoolean(visualInspection),
+              papanicolao: toBoolean(papanicolao),
+              colposcopy: toBoolean(colposcopy),
               group,
-              positive,
+              positive: toBoolean(positive),
               antiDGlobulin,
-              toxoplasmosisLessThanTwenty,
-              toxoplasmosisGreaterThanTwenty,
-              toxoplasmosisFirst,
-              vihRequestedLessThanTwenty,
-              vihRequestedGreaterThanTwenty,
-              vihDoneLessThanTwenty,
-              vihDoneGreaterThanTwenty,
+              toxoplasmosisLessThanTwenty: toBoolean(
+                toxoplasmosisLessThanTwenty
+              ),
+              toxoplasmosisGreaterThanTwenty: toBoolean(
+                toxoplasmosisGreaterThanTwenty
+              ),
+              toxoplasmosisFirst: toBoolean(toxoplasmosisFirst),
+              vihRequestedLessThanTwenty: toBoolean(vihRequestedLessThanTwenty),
+              vihRequestedGreaterThanTwenty: toBoolean(
+                vihRequestedGreaterThanTwenty
+              ),
+              vihDoneLessThanTwenty: toBoolean(vihDoneLessThanTwenty),
+              vihDoneGreaterThanTwenty: toBoolean(vihDoneGreaterThanTwenty),
               hemoglobinlessThanTwenty,
               hemoglobinGreaterThanTwenty,
-              syphilisVDRLLessThanTwenty,
+              syphilisVDRLLessThanTwenty: toBoolean(syphilisVDRLLessThanTwenty),
               syphilisVDRLLessThanTwentyWeeks,
-              syphilisVDRLGreaterThanTwenty,
+              syphilisVDRLGreaterThanTwenty: toBoolean(
+                syphilisVDRLGreaterThanTwenty
+              ),
               syphilisVDRLGreaterThanTwentyWeeks,
-              syphilisFTALessThanTwenty,
+              syphilisFTALessThanTwenty: toBoolean(syphilisFTALessThanTwenty),
               syphilisFTALessThanTwentyWeeks,
-              syphilisFTAGreaterThanTwenty,
+              syphilisFTAGreaterThanTwenty: toBoolean(
+                syphilisFTAGreaterThanTwenty
+              ),
               syphilisFTAGreaterThanTwentyWeeks,
-              syphilisTreatmentLessThanTwenty,
+              syphilisTreatmentLessThanTwenty: toBoolean(
+                syphilisTreatmentLessThanTwenty
+              ),
               syphilisTreatmentLessThanTwentyWeeks,
-              syphilisTreatmentGreaterThanTwenty,
+              syphilisTreatmentGreaterThanTwenty: toBoolean(
+                syphilisTreatmentGreaterThanTwenty
+              ),
               syphilisTreatmentGreaterThanTwentyWeeks,
-              syphilisPartnerTreatmentLessThanTwenty,
-              syphilisPartnerTreatmentGreaterThanTwenty,
-              bacteriuriaLessThanTwenty,
-              bacteriuriaGreaterThanTwenty,
+              syphilisPartnerTreatmentLessThanTwenty: toBoolean(
+                syphilisPartnerTreatmentLessThanTwenty
+              ),
+              syphilisPartnerTreatmentGreaterThanTwenty: toBoolean(
+                syphilisPartnerTreatmentGreaterThanTwenty
+              ),
+              bacteriuriaLessThanTwenty: toBoolean(bacteriuriaLessThanTwenty),
+              bacteriuriaGreaterThanTwenty: toBoolean(
+                bacteriuriaGreaterThanTwenty
+              ),
               bloodGlucoseLessThanTwenty,
               bloodGlucoseGreaterThanTwenty,
             };

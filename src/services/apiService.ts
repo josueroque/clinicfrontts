@@ -159,7 +159,6 @@ export async function updateCurrentGestation(patient: any) {
     return response;
   } catch (error) {
     console.log(error);
-    throw error;
   }
 }
 

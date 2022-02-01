@@ -63,6 +63,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
             label='Size'
             variant='outlined'
             size='small'
+            key='sizeGeneral'
             value={props.size}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               props.updateSize(parseFloat(e.target.value));
@@ -78,6 +79,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
             label='Previous Weight'
             variant='outlined'
             size='small'
+            key='previousWeihtGeneral'
             value={props.previousWeight}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               props.updatePreviousWeight(parseFloat(e.target.value));
