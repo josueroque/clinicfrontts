@@ -4,25 +4,20 @@ import React, {
   useContext,
   useEffect,
   useCallback,
+  useReducer,
 } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Button, ButtonGroup, AppBar } from "@material-ui/core";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
-
-import {
-  getCurrentGestationFunction,
-  PatientsContext,
-} from "../../context/PatientsContext";
 import Loader from "../Loader";
 import Sidebar from "../Sidebar";
 import Typography from "@material-ui/core/Typography";
 import { Patient } from "../../interfaces/patient";
 import FormGeneral from "./FormGeneral";
-import { History as IHistory } from "../../interfaces/history";
 import FormAntitetanic from "./FormAntitetanic";
 import FormNormalExam from "./FormNormalExam";
 import FormCervix from "./FormCervix";
@@ -36,8 +31,21 @@ import FormBloodGlucose from "./FormBloodGlucose";
 
 import requireAuth from "../requireAuth";
 import swal from "sweetalert";
-import { updateCurrentGestation } from "../../services/apiService";
-import GeneralInfo from "../GeneralInfo";
+
+import { PatientsContext } from "../../context/PatientsContext";
+
+import {
+  getCurrentGestationFunction,
+  contextGestation,
+  previousGestation,
+  setCurrentGestationFunction,
+  setPreviousGestationFunction,
+  previousGestationReducer,
+} from "../../context/CurrentsGestationContext";
+
+import { auth } from "../../context/UsersContext";
+
+import useFormValues from "../../hooks/useFormGeneral";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -48,18 +56,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CurrentGestation = (props: any): JSX.Element => {
+  const [localPreviousGestation, dispatchPrevious] = useReducer(
+    previousGestationReducer,
+    previousGestation
+  );
+
+  // const [previousGestation, setPreviousGestation] = useState<any>({});
+
   const [_id, update_Id] = useState<string>("");
   const [buttonLabel, updateBottonLabel] = useState("Save");
   const [patient, updatePatient] = useState<Patient | null>(null);
-  const [currentGestation, updateCurrentGestation] = useState<any | null>(null);
+  //  const [currentGestation, updateCurrentGestation] = useState<any | null>(null);
 
   const [likelyDeliveryDate, updateLikelyDeliveryDate] = useState<Date | null>(
     new Date()
   );
   const [lastMenstruationDate, updateLastMenstruationDate] =
     useState<Date | null>(new Date());
-  const [size, updateSize] = useState<number>(0);
-  const [previousWeight, updatePreviousWeight] = useState<number>(0);
+  //const [size, updateSize] = useState<number>(0);
+
   const [current, updateCurrent] = useState<string>("");
   const [dose1, updateDose1] = useState<number | null>(0);
   const [dose2, updateDose2] = useState<number | null>(0);
@@ -152,8 +167,10 @@ const CurrentGestation = (props: any): JSX.Element => {
 
   const [value, setValue] = React.useState(0);
 
+  const { updatePreviousWeight, updateSize, size, previousWeight } =
+    useFormValues();
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    console.log(newValue);
     setValue(newValue);
   };
 
@@ -161,7 +178,9 @@ const CurrentGestation = (props: any): JSX.Element => {
 
   const ScrollableTabsButtonAuto = () => {
     const classes = useStyles();
-
+    // console.log(contextGestation);
+    console.log(previousGestation);
+    console.log(localPreviousGestation);
     return (
       <div className={classes.root}>
         <AppBar position='static' color='default'>
@@ -189,13 +208,13 @@ const CurrentGestation = (props: any): JSX.Element => {
         </AppBar>
         <TabPanel value={value} index={0}>
           <FormGeneral
-            likelyDeliveryDate={likelyDeliveryDate}
+            previousGestation={previousGestation}
             size={size}
-            previousWeight={previousWeight}
+            updateSize={updateSize}
+            currentGestation={contextGestation}
+            likelyDeliveryDate={likelyDeliveryDate}
             lastMenstruationDate={lastMenstruationDate}
             updateLikelyDeliveryDate={updateLikelyDeliveryDate}
-            updateSize={updateSize}
-            updatePreviousWeight={updatePreviousWeight}
             updateLastMenstruationDate={updateLastMenstruationDate}
           />
         </TabPanel>
@@ -392,14 +411,13 @@ const CurrentGestation = (props: any): JSX.Element => {
       updateLoading(false);
       updateSavedStatus(true);
       let response;
-      if (currentGestation) {
+      if (contextGestation) {
         response = await updateCurrentGestationFunction(gestation);
       } else response = await saveCurrentGestationFunction(gestation);
 
       if (response.statusText === "OK") {
         updateErrorStatus(false);
       }
-      console.log(response);
       await wait(1000);
       swal("Changes has been saved!", "", "success");
     } catch (error: any) {
@@ -409,74 +427,7 @@ const CurrentGestation = (props: any): JSX.Element => {
     }
   };
 
-  const updateFetchedCurrentGestation = useCallback((gestation: any) => {
-    if (currentGestation) {
-      updateLikelyDeliveryDate(currentGestation.dateGestation);
-      updateLastMenstruationDate(currentGestation.lastMenstruationDate);
-      updateSize(currentGestation.size);
-      updatePreviousWeight(currentGestation.previousWeight);
-      updateCurrent(currentGestation.current);
-      updateDose1(currentGestation.dose1);
-      updateDose2(currentGestation.dose2);
-      updateDental(currentGestation.dental);
-      updateMammary(currentGestation.mammary);
-      updateVisualInspection(currentGestation.visualInspection);
-      updatePapanicolao(currentGestation.papanicolao);
-      updateColposcopy(currentGestation.colposcopy);
-      updateGroup(currentGestation.group);
-      updatePositive(currentGestation.positive);
-      updateAntiDGlobulin(currentGestation.globulin);
-      updateToxoplasmosisLessThanTwenty(currentGestation.toxoplasmosis);
-      updateToxoplasmosisGreaterThanTwenty(
-        currentGestation.toxoplasmosisGreaterThanTwenty
-      );
-      updateToxoplasmosisFirst(currentGestation.toxoplasmosisFirs);
-      updateVihRequestedLessThanTwenty(
-        currentGestation.vihRequestedLessThanTwenty
-      );
-      updateVihRequestedGreaterThanTwenty(vihRequestedGreaterThanTwenty);
-      updateVihDoneLessThanTwenty(vihDoneLessThanTwenty);
-      updateVihDoneGreaterThanTwenty(vihDoneGreaterThanTwenty);
-      updateHemoglobinLessThanTwenty(hemoglobinlessThanTwenty);
-      updateHemoglobinGreaterThanTwenty(hemoglobinGreaterThanTwenty);
-      // Syphilis
-      updateSyphilisVDRLLessThanTwenty(syphilisVDRLLessThanTwenty);
-      updateSyphilisVDRLLessThanTwentyWeeks(syphilisVDRLLessThanTwentyWeeks);
-      updateSyphilisVDRLGreaterThanTwenty(syphilisVDRLGreaterThanTwenty);
-      updateSyphilisVDRLGreaterThanTwentyWeeks(
-        syphilisVDRLGreaterThanTwentyWeeks
-      );
-      updateSyphilisFTALessThanTwenty(syphilisFTALessThanTwenty);
-      updateSyphilisFTALessThanTwentyWeeks(syphilisFTALessThanTwentyWeeks);
-      updateSyphilisFTAGreaterThanTwenty(syphilisFTAGreaterThanTwenty);
-      updateSyphilisFTAGreaterThanTwentyWeeks(
-        syphilisFTAGreaterThanTwentyWeeks
-      );
-      updateSyphilisTreatmentLessThanTwenty(syphilisTreatmentLessThanTwenty);
-      updateSyphilisTreatmentLessThanTwentyWeeks(
-        syphilisTreatmentLessThanTwentyWeeks
-      );
-      updateSyphilisTreatmentGreaterThanTwenty(
-        syphilisTreatmentGreaterThanTwenty
-      );
-      updateSyphilisTreatmentGreaterThanTwentyWeeks(
-        syphilisTreatmentGreaterThanTwentyWeeks
-      );
-      updateSyphilisPartnerTreatmentLessThanTwenty(
-        syphilisPartnerTreatmentLessThanTwenty
-      );
-      updateSyphilisPartnerTreatmentGreaterThanTwenty(
-        syphilisPartnerTreatmentGreaterThanTwenty
-      );
-      updateBacteriuriaLessThanTwenty(bacteriuriaLessThanTwenty);
-      updateBacteriuriaGreaterThanTwenty(bacteriuriaGreaterThanTwenty);
-      updateBloodGlucoseLessThanTwenty(bloodGlucoseLessThanTwenty);
-      updateBloodGlucoseGreaterThanTwenty(bloodGlucoseGreaterThanTwenty);
-    }
-  }, []);
-
   useEffect(() => {
-    console.log(props.match?.params?.id);
     if (props.match?.params?.id) {
       getPatient(props.match?.params?.id);
 
@@ -488,10 +439,6 @@ const CurrentGestation = (props: any): JSX.Element => {
     if (patient) update_Id(patient._id);
   }, [patient]);
 
-  useEffect(() => {
-    if (currentGestation) updateFetchedCurrentGestation(currentGestation);
-  }, [currentGestation, updateFetchedCurrentGestation]);
-
   const getPatient: any = async () => {
     const patient = await getPatientIdFunction({ id: _id });
     updatePatient(patient);
@@ -501,9 +448,11 @@ const CurrentGestation = (props: any): JSX.Element => {
     const gestation = await getCurrentGestationFunction({
       _id: props.match?.params?.id,
     });
-
+    console.log(gestation);
     if (gestation) {
-      updateCurrentGestation(gestation);
+      //   await setCurrentGestationFunction('size',value);
+      setPreviousGestationFunction(gestation, dispatchPrevious);
+      //      setPreviousGestation(gestation);
       updateBottonLabel("UPDATE");
     }
   };
@@ -547,7 +496,6 @@ const CurrentGestation = (props: any): JSX.Element => {
     if (value.toLowerCase() === "false") return false;
     return undefined;
   };
-  console.log(patient);
   return (
     <Fragment>
       <Sidebar></Sidebar>
@@ -557,11 +505,11 @@ const CurrentGestation = (props: any): JSX.Element => {
       <div>
         <form
           className={classes.root}
+          key='mainForm'
           noValidate
           autoComplete='off'
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(patient);
             let gestation = {
               _id: patient?._id,
               idNumber: patient?.idNumber,
@@ -632,7 +580,7 @@ const CurrentGestation = (props: any): JSX.Element => {
           }}
         >
           <div style={{ marginTop: "20vh !important" }}>
-            <ScrollableTabsButtonAuto />
+            <ScrollableTabsButtonAuto key='ScrollableTabsButtonAutoForm' />
           </div>
           <Grid container justify='center' className='Button-Container'>
             <ButtonGroup>

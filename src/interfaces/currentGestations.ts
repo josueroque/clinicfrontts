@@ -1,12 +1,12 @@
 import { SetStateAction, Dispatch } from "react";
 export interface formGeneralProps {
+  currentGestation?: any;
   likelyDeliveryDate: Date | null;
-  size: number;
-  previousWeight: number;
   lastMenstruationDate: Date | null;
+  size?: number;
+  previousGestation?: any;
+  updateSize?: Dispatch<SetStateAction<number>>;
   updateLikelyDeliveryDate: Dispatch<SetStateAction<Date | null>>;
-  updateSize: Function;
-  updatePreviousWeight: Function;
   updateLastMenstruationDate: Dispatch<SetStateAction<Date | null>>;
 }
 
