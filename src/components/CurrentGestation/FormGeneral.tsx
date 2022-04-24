@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { Grid, FormControl, TextField } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -6,47 +6,34 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { formGeneralProps as iFormGeneralProps } from "../../interfaces/currentGestations";
-import useFormValues from "../../hooks/useFormGeneral";
-import {
-  getCurrentGestationFunction,
-  contextGestation,
-  previousGestation,
-  setCurrentGestationFunction,
-  currentGestationReducer,
-  useValues,
-} from "../../context/CurrentsGestationContext";
-console.log(contextGestation);
-console.log(previousGestation);
-const Size = (props: any) => {
-  const { size, updateSize } = useFormValues();
-  const [currentGestation, dispatchCurrent] = useReducer(
-    currentGestationReducer,
-    Object.keys(contextGestation).length === 0
-      ? previousGestation
-      : contextGestation
-  );
+import { setEditedGestation } from "../../store/actions/gestation";
+import { useDispatch, useSelector } from "react-redux";
 
-  const handleChange = (value: number): void => {
-    updateSize(value);
-    setCurrentGestationFunction("size", value, dispatchCurrent);
-  };
-  console.log(contextGestation);
-  console.log(previousGestation);
-  console.log(currentGestation);
+const Size = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
 
   return (
     <FormControl key='formSizeContainer'>
       <TextField
         type='number'
         className='FormTextGeneral'
+        name='size'
         id='size'
         label='Size'
         variant='outlined'
         size='small'
         key='sizeGeneral'
-        value={size}
+        value={editedGestation?.size}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          handleChange(parseFloat(e.target.value));
+          dispatch(
+            setEditedGestation({
+              ...editedGestation,
+              size: parseFloat(e.target.value),
+            })
+          );
         }}
         style={{ width: 300 }}
       />
@@ -55,28 +42,38 @@ const Size = (props: any) => {
 };
 
 const PreviousWeight = () => {
-  const { previousWeight, updatePreviousWeight } = useFormValues();
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
-    <FormControl>
-      <TextField
-        type='number'
-        className='FormTextGeneral'
-        id='previousWeiht'
-        label='Previous Weight'
-        variant='outlined'
-        size='small'
-        key='previousWeihtGeneral'
-        value={previousWeight}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          updatePreviousWeight(parseFloat(e.target.value));
-        }}
-        style={{ width: 300 }}
-      />
-    </FormControl>
+    <TextField
+      type='number'
+      className='FormTextGeneral'
+      id='previousWeight'
+      label='Previous Weight'
+      variant='outlined'
+      size='small'
+      key='previousWeightGeneral'
+      value={editedGestation?.previousWeight}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(
+          setEditedGestation({
+            ...editedGestation,
+            previousWeight: parseFloat(e.target.value),
+          })
+        );
+      }}
+      style={{ width: 300 }}
+    />
   );
 };
 
 const FormGeneral = (props: iFormGeneralProps) => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <Grid
       container
@@ -95,8 +92,16 @@ const FormGeneral = (props: iFormGeneralProps) => {
               id='date-picker-dialog'
               label='Last menstruation date'
               format='dd/MM/yyyy'
-              value={props.lastMenstruationDate}
-              onChange={props.updateLastMenstruationDate}
+              value={editedGestation?.lastMenstruationDate}
+              onChange={(e: any) => {
+                console.log(e);
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    lastMenstruationDate: e,
+                  })
+                );
+              }}
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
@@ -114,8 +119,15 @@ const FormGeneral = (props: iFormGeneralProps) => {
               id='date-picker-dialog'
               label='Likely delivery date'
               format='dd/MM/yyyy'
-              value={props.likelyDeliveryDate}
-              onChange={props.updateLikelyDeliveryDate}
+              value={editedGestation?.likelyDeliveryDate}
+              onChange={(e: any) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    likelyDeliveryDate: e,
+                  })
+                );
+              }}
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
@@ -124,7 +136,7 @@ const FormGeneral = (props: iFormGeneralProps) => {
           </Grid>
         </MuiPickersUtilsProvider>
       </FormControl>
-      <Size currentGestation={props.currentGestation} />
+      <Size />
       <PreviousWeight />
     </Grid>
   );

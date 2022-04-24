@@ -3,10 +3,10 @@ import {
   GET_GESTATION_SUCCESS,
   GET_GESTATION_FAILURE,
   SET_GESTATION,
+  SET_EDITED_GESTATION,
 } from "../types";
 
 const initialState = {
-  currentGestation: {},
   editedGestation: {},
   loading: false,
   error: false,
@@ -15,10 +15,15 @@ const initialState = {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action: any) {
   switch (action.type) {
+    case SET_EDITED_GESTATION:
+      return {
+        ...state,
+        editedGestation: action.payload,
+      };
     case SET_GESTATION:
       return {
         ...state,
-        GESTATION: action.payload,
+        gestation: action.payload,
       };
 
     case START_GET_GESTATION:
@@ -26,7 +31,7 @@ export default function (state = initialState, action: any) {
         ...state,
         loading: true,
         error: false,
-        releases: [],
+        gestation: {},
       };
     case GET_GESTATION_SUCCESS:
       return {

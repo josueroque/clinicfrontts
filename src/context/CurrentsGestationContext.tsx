@@ -17,7 +17,6 @@ export const setCurrentGestationFunction = async (
   value: any,
   dispatch: any
 ) => {
-  console.log(contextGestation);
   dispatch({ type: "setCurrentGestation", payload: { key, value } });
   // return contextGestation;
   return;

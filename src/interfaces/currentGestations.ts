@@ -1,14 +1,5 @@
 import { SetStateAction, Dispatch } from "react";
-export interface formGeneralProps {
-  currentGestation?: any;
-  likelyDeliveryDate: Date | null;
-  lastMenstruationDate: Date | null;
-  size?: number;
-  previousGestation?: any;
-  updateSize?: Dispatch<SetStateAction<number>>;
-  updateLikelyDeliveryDate: Dispatch<SetStateAction<Date | null>>;
-  updateLastMenstruationDate: Dispatch<SetStateAction<Date | null>>;
-}
+export interface formGeneralProps {}
 
 export interface antitetanicProps {
   current: string;

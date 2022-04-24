@@ -3,6 +3,7 @@ import {
   GET_GESTATION_SUCCESS,
   GET_GESTATION_FAILURE,
   SET_GESTATION,
+  SET_EDITED_GESTATION,
 } from "../types";
 
 import { getCurrentGestation } from "../../services/apiService";
@@ -26,6 +27,11 @@ export const setGestation = (gestation: any) => ({
   payload: gestation,
 });
 
+export const setEditedGestation = (gestation: any) => ({
+  type: SET_EDITED_GESTATION,
+  payload: gestation,
+});
+
 export function setGestationAction(gestation: any) {
   return async (dispatch: any) => {
     debugger;
@@ -39,6 +45,7 @@ export function getGestationAction(filter: any) {
     try {
       const response = await getCurrentGestation(filter);
       dispatch(getGestationSuccess(response));
+      dispatch(setEditedGestation(response));
     } catch (error) {
       debugger;
       dispatch(getGestationFailure(error));

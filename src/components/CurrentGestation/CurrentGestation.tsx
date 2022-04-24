@@ -70,7 +70,10 @@ const CurrentGestation = (props: any): JSX.Element => {
   const [_id, update_Id] = useState<string>("");
   const [buttonLabel, updateBottonLabel] = useState("Save");
   const [patient, updatePatient] = useState<Patient | null>(null);
-  //  const [currentGestation, updateCurrentGestation] = useState<any | null>(null);
+
+  const currentGestation = useSelector(
+    (state: any) => state?.gestation?.gestation
+  );
 
   const [likelyDeliveryDate, updateLikelyDeliveryDate] = useState<Date | null>(
     new Date()
@@ -182,9 +185,7 @@ const CurrentGestation = (props: any): JSX.Element => {
 
   const ScrollableTabsButtonAuto = () => {
     const classes = useStyles();
-    // console.log(contextGestation);
-    console.log(previousGestation);
-    console.log(localPreviousGestation);
+
     return (
       <div className={classes.root}>
         <AppBar position='static' color='default'>
@@ -211,16 +212,7 @@ const CurrentGestation = (props: any): JSX.Element => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <FormGeneral
-            previousGestation={previousGestation}
-            size={size}
-            updateSize={updateSize}
-            currentGestation={contextGestation}
-            likelyDeliveryDate={likelyDeliveryDate}
-            lastMenstruationDate={lastMenstruationDate}
-            updateLikelyDeliveryDate={updateLikelyDeliveryDate}
-            updateLastMenstruationDate={updateLastMenstruationDate}
-          />
+          <FormGeneral />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <FormAntitetanic
@@ -393,9 +385,7 @@ const CurrentGestation = (props: any): JSX.Element => {
   };
 
   const {
-    getHistoryIdFunction,
     getPatientIdFunction,
-    updateHistoryFunction,
     updateCurrentGestationFunction,
     saveCurrentGestationFunction,
   } = useContext(PatientsContext);
@@ -438,31 +428,20 @@ const CurrentGestation = (props: any): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log("hola");
     dispatch(getGestationAction({ _id: props.match?.params?.id }));
-    //  getCurrentGestation({ id: props.match?.params?.id });
-  }, [props.match?.params?.id]);
+  }, [props.match?.params?.id, dispatch]);
 
   useEffect(() => {
     if (patient) update_Id(patient._id);
   }, [patient]);
 
+  useEffect(() => {
+    console.log(currentGestation);
+  }, [currentGestation]);
+
   const getPatient: any = async () => {
     const patient = await getPatientIdFunction({ id: _id });
     updatePatient(patient);
-  };
-
-  const getCurrentGestation: any = async () => {
-    const gestation = await getCurrentGestationFunction({
-      _id: props.match?.params?.id,
-    });
-    console.log(gestation);
-    if (gestation) {
-      //   await setCurrentGestationFunction('size',value);
-      setPreviousGestationFunction(gestation, dispatchPrevious);
-      //      setPreviousGestation(gestation);
-      updateBottonLabel("UPDATE");
-    }
   };
 
   interface TabPanelProps {
@@ -505,7 +484,6 @@ const CurrentGestation = (props: any): JSX.Element => {
     return undefined;
   };
 
-  console.log("hola");
   return (
     <Fragment>
       <Sidebar></Sidebar>
