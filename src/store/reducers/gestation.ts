@@ -33,7 +33,7 @@ export default function (state = initialState, action: any) {
         ...state,
         loading: false,
         error: false,
-        gestation: action.payload.gestation,
+        gestation: action.payload,
       };
     case GET_GESTATION_FAILURE:
       return {

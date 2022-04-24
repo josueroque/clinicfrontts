@@ -6,6 +6,8 @@ import React, {
   useCallback,
   useReducer,
 } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getGestationAction } from "../../store/actions/gestation";
 import { Link } from "react-router-dom";
 import { Grid, Button, ButtonGroup, AppBar } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
@@ -56,6 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CurrentGestation = (props: any): JSX.Element => {
+  const dispatch = useDispatch();
+
   const [localPreviousGestation, dispatchPrevious] = useReducer(
     previousGestationReducer,
     previousGestation
@@ -430,10 +434,14 @@ const CurrentGestation = (props: any): JSX.Element => {
   useEffect(() => {
     if (props.match?.params?.id) {
       getPatient(props.match?.params?.id);
-
-      getCurrentGestation({ id: props.match?.params?.id });
     }
   }, []);
+
+  useEffect(() => {
+    console.log("hola");
+    dispatch(getGestationAction({ _id: props.match?.params?.id }));
+    //  getCurrentGestation({ id: props.match?.params?.id });
+  }, [props.match?.params?.id]);
 
   useEffect(() => {
     if (patient) update_Id(patient._id);
@@ -496,6 +504,8 @@ const CurrentGestation = (props: any): JSX.Element => {
     if (value.toLowerCase() === "false") return false;
     return undefined;
   };
+
+  console.log("hola");
   return (
     <Fragment>
       <Sidebar></Sidebar>

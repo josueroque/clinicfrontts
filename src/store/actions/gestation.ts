@@ -38,8 +38,9 @@ export function getGestationAction(filter: any) {
     dispatch(startGetGestation());
     try {
       const response = await getCurrentGestation(filter);
-      dispatch(getGestationSuccess(response.data));
+      dispatch(getGestationSuccess(response));
     } catch (error) {
+      debugger;
       dispatch(getGestationFailure(error));
     }
   };
