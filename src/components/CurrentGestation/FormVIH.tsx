@@ -1,5 +1,4 @@
 import React from "react";
-import { VIHProps as iVIHProps } from "../../interfaces/currentGestations";
 import {
   Container,
   FormControl,
@@ -8,8 +7,14 @@ import {
   FormControlLabel,
   FormLabel,
 } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
 
-const FormVIH = (props: iVIHProps) => {
+const FormVIH = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Container>
@@ -19,9 +24,14 @@ const FormVIH = (props: iVIHProps) => {
             className='RadioCondition '
             aria-label='VIH'
             name='vihRequestedLess'
-            value={props.vihRequestedLessThanTwenty}
-            onChange={(e) => {
-              props.updateVihRequestedLessThanTwenty(e.target.value);
+            value={editedGestation?.vihRequestedLessThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  vihRequestedLessThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -46,9 +56,14 @@ const FormVIH = (props: iVIHProps) => {
             className='RadioCondition '
             aria-label='VIH'
             name='vihRequestedGreater'
-            value={props.vihRequestedGreaterThanTwenty}
-            onChange={(e) => {
-              props.updateVihRequestedGreaterThanTwenty(e.target.value);
+            value={editedGestation.vihRequestedGreaterThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  vihRequestedGreaterThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -71,9 +86,14 @@ const FormVIH = (props: iVIHProps) => {
             className='RadioCondition '
             aria-label='VIH'
             name='vihDoneLess'
-            value={props.vihDoneLessThanTwenty}
+            value={editedGestation?.vihDoneLessThanTwenty}
             onChange={(e) => {
-              props.updateVihDoneLessThanTwenty(e.target.value);
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  vihDoneLessThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -96,9 +116,14 @@ const FormVIH = (props: iVIHProps) => {
             className='RadioCondition '
             aria-label='VIH'
             name='vihDoneGreater'
-            value={props.vihDoneGreaterThanTwenty}
-            onChange={(e) => {
-              props.updateVihDoneGreaterThanTwenty(e.target.value);
+            value={editedGestation?.vihDoneGreaterThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  vihDoneGreaterThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel

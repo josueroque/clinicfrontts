@@ -1,7 +1,12 @@
 import React from "react";
-import { bloodGlucoseProps as iBloodGlucoseProps } from "../../interfaces/currentGestations";
 import { Grid, FormControl, TextField } from "@material-ui/core";
-const FormBloodGlucose = (props: iBloodGlucoseProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+const FormBloodGlucose = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <>
       <Grid
@@ -12,7 +17,6 @@ const FormBloodGlucose = (props: iBloodGlucoseProps) => {
         justify='center'
         className='SyphilisContainer'
       >
-        {" "}
         <FormControl>
           <TextField
             type='number'
@@ -21,10 +25,13 @@ const FormBloodGlucose = (props: iBloodGlucoseProps) => {
             label='Less than 20 weeks'
             variant='outlined'
             size='small'
-            value={props.bloodGlucoseLessThanTwenty}
+            value={editedGestation?.bloodGlucoseLessThanTwenty}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateBloodGlucoseLessThanTwenty(
-                parseFloat(e.target.value)
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  bloodGlucoseLessThanTwenty: parseFloat(e.target.value),
+                })
               );
             }}
           />
@@ -37,10 +44,13 @@ const FormBloodGlucose = (props: iBloodGlucoseProps) => {
             label='Greater than 20 weeks'
             variant='outlined'
             size='small'
-            value={props.bloodGlucoseGreaterThanTwenty}
+            value={editedGestation?.bloodGlucoseGreaterThanTwenty}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateBloodGlucoseGreaterThanTwenty(
-                parseFloat(e.target.value)
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  bloodGlucoseGreaterThanTwenty: parseFloat(e.target.value),
+                })
               );
             }}
           />

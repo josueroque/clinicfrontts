@@ -1,7 +1,14 @@
 import React from "react";
-import { hemoglobinProps as iHemoglobinProps } from "../../interfaces/currentGestations";
 import { Grid, FormControl, TextField } from "@material-ui/core";
-const FormHemoglobin = (props: iHemoglobinProps) => {
+
+import { setEditedGestation } from "../../store/actions/gestation";
+import { useDispatch, useSelector } from "react-redux";
+
+const FormHemoglobin = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -19,9 +26,14 @@ const FormHemoglobin = (props: iHemoglobinProps) => {
             label='Less than 20 weeks'
             variant='outlined'
             size='small'
-            value={props.hemoglobinLessThanTwenty}
+            value={editedGestation?.hemoglobinLessThanTwenty}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateHemoglobinLessThanTwenty(parseFloat(e.target.value));
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  hemoglobinLessThanTwenty: parseFloat(e.target.value),
+                })
+              );
             }}
           />
         </FormControl>
@@ -33,10 +45,13 @@ const FormHemoglobin = (props: iHemoglobinProps) => {
             label='Greater than 20 weeks'
             variant='outlined'
             size='small'
-            value={props.hemoglobinGreaterThanTwenty}
+            value={editedGestation?.hemoglobinGreaterThanTwenty}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateHemoglobinGreaterThanTwenty(
-                parseFloat(e.target.value)
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  hemoglobinGreaterThanTwenty: parseFloat(e.target.value),
+                })
               );
             }}
           />

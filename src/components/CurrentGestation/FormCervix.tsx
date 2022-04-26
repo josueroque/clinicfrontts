@@ -6,9 +6,13 @@ import {
   FormLabel,
   Grid,
 } from "@material-ui/core";
-import { cervixProps as iCervixProps } from "../../interfaces/currentGestations";
-
-const FormCervix = (props: iCervixProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+const FormCervix = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -26,9 +30,14 @@ const FormCervix = (props: iCervixProps) => {
             className='RadioCondition'
             aria-label='visualInspection'
             name='visualInspection'
-            value={props.visualInspection}
-            onChange={(e) => {
-              props.updateVisualInspection(e.target.value);
+            value={editedGestation?.visualInspection}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  visualInspection: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -59,9 +68,14 @@ const FormCervix = (props: iCervixProps) => {
             className='RadioCondition'
             aria-label='papanicolao'
             name='papanicolao'
-            value={props.papanicolao}
-            onChange={(e) => {
-              props.updatePapanicolao(e.target.value);
+            value={editedGestation?.papanicolao}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  papanicolao: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -92,9 +106,14 @@ const FormCervix = (props: iCervixProps) => {
             className='RadioCondition'
             aria-label='colposcopy'
             name='colposcopy'
-            value={props.colposcopy}
-            onChange={(e) => {
-              props.updateColposcopy(e.target.value);
+            value={editedGestation?.colposcopy}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  colposcopy: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel

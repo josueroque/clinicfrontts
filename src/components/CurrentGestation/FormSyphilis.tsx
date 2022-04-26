@@ -9,8 +9,14 @@ import {
   TextField,
   Grid,
 } from "@material-ui/core";
-import { siphilysProps as iSyphilisProps } from "../../interfaces/currentGestations";
-const FormSyphilis = (props: iSyphilisProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+
+const FormSyphilis = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <>
       <Grid
@@ -34,9 +40,14 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioCondition'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisVDRLLessThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisVDRLLessThanTwenty(e.target.value);
+              value={editedGestation?.syphilisVDRLLessThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisVDRLLessThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -67,10 +78,13 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisVDRLLessThanTwentyWeeks}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisVDRLLessThanTwentyWeeks(
-                  parseFloat(e.target.value)
+              value={editedGestation?.syphilisVDRLLessThanTwentyWeeks}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisVDRLLessThanTwentyWeeks: parseFloat(e.target.value),
+                  })
                 );
               }}
             />
@@ -90,9 +104,14 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioConditionSyphillisFTA'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisVDRLGreaterThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisVDRLGreaterThanTwenty(e.target.value);
+              value={editedGestation?.syphilisVDRLGreaterThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisVDRLGreaterThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -129,10 +148,15 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisVDRLGreaterThanTwentyWeeks}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisVDRLGreaterThanTwentyWeeks(
-                  parseFloat(e.target.value)
+              value={editedGestation?.syphilisVDRLGreaterThanTwentyWeeks}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisVDRLGreaterThanTwentyWeeks: parseFloat(
+                      e.target.value
+                    ),
+                  })
                 );
               }}
             />
@@ -154,9 +178,14 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioCondition'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisFTALessThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisFTALessThanTwenty(e.target.value);
+              value={editedGestation?.syphilisFTALessThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisFTALessThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -187,10 +216,13 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisFTALessThanTwentyWeeks}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisFTALessThanTwentyWeeks(
-                  parseFloat(e.target.value)
+              value={editedGestation?.syphilisFTALessThanTwentyWeeks}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisFTALessThanTwentyWeeks: parseFloat(e.target.value),
+                  })
                 );
               }}
             />
@@ -210,9 +242,14 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioConditionSyphillisFTA'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisFTAGreaterThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisFTAGreaterThanTwenty(e.target.value);
+              value={editedGestation?.syphilisFTAGreaterThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisFTAGreaterThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -249,10 +286,15 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisFTAGreaterThanTwentyWeeks}
+              value={editedGestation?.syphilisFTAGreaterThanTwentyWeeks}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisFTAGreaterThanTwentyWeeks(
-                  parseFloat(e.target.value)
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisFTAGreaterThanTwentyWeeks: parseFloat(
+                      e.target.value
+                    ),
+                  })
                 );
               }}
             />
@@ -273,9 +315,14 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioCondition'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisTreatmentLessThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisTreatmentLessThanTwenty(e.target.value);
+              value={editedGestation?.syphilisTreatmentLessThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisTreatmentLessThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -306,10 +353,15 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisTreatmentLessThanTwentyWeeks}
+              value={editedGestation?.syphilisTreatmentLessThanTwentyWeeks}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisTreatmentLessThanTwentyWeeks(
-                  parseFloat(e.target.value)
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisTreatmentLessThanTwentyWeeks: parseFloat(
+                      e.target.value
+                    ),
+                  })
                 );
               }}
             />
@@ -323,16 +375,20 @@ const FormSyphilis = (props: iSyphilisProps) => {
           justify='center'
           className='SyphilisContainer'
         >
-          {" "}
           <FormControl>
             <FormLabel>{`Treatment >= 20 weeks`}</FormLabel>
             <RadioGroup
               className='RadioConditionSyphillisFTA'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisTreatmentGreaterThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisTreatmentGreaterThanTwenty(e.target.value);
+              value={editedGestation?.syphilisTreatmentGreaterThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisTreatmentGreaterThanTwenty: e.target.value,
+                  })
+                );
               }}
             >
               <FormControlLabel
@@ -369,10 +425,15 @@ const FormSyphilis = (props: iSyphilisProps) => {
               label='Week number'
               variant='outlined'
               size='small'
-              value={props.syphilisTreatmentGreaterThanTwentyWeeks}
+              value={editedGestation?.syphilisTreatmentGreaterThanTwentyWeeks}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisTreatmentGreaterThanTwentyWeeks(
-                  parseFloat(e.target.value)
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisTreatmentGreaterThanTwentyWeeks: parseFloat(
+                      e.target.value
+                    ),
+                  })
                 );
               }}
             />
@@ -387,17 +448,19 @@ const FormSyphilis = (props: iSyphilisProps) => {
           justify='center'
           className='SyphilisContainer'
         >
-          {" "}
           <FormControl>
             <FormLabel>{`Partner treatment < 20 weeks`}</FormLabel>
             <RadioGroup
               className='RadioConditionSyphillisFTA'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisPartnerTreatmentLessThanTwenty}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisPartnerTreatmentLessThanTwenty(
-                  e.target.value
+              value={editedGestation?.syphilisPartnerTreatmentLessThanTwenty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisPartnerTreatmentLessThanTwenty: e.target.value,
+                  })
                 );
               }}
             >
@@ -442,10 +505,13 @@ const FormSyphilis = (props: iSyphilisProps) => {
               className='RadioConditionSyphillisFTA'
               aria-label='syphilis'
               name='syphilis'
-              value={props.syphilisPartnerTreatmentGreaterThanTwenty}
+              value={editedGestation?.syphilisPartnerTreatmentGreaterThanTwenty}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.updateSyphilisPartnerTreatmentGreaterThanTwenty(
-                  e.target.value
+                dispatch(
+                  setEditedGestation({
+                    ...editedGestation,
+                    syphilisPartnerTreatmentGreaterThanTwenty: e.target.value,
+                  })
                 );
               }}
             >

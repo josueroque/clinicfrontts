@@ -6,9 +6,13 @@ import {
   FormLabel,
   Grid,
 } from "@material-ui/core";
-import { normalExamProps as iFormNormalExamProps } from "../../interfaces/currentGestations";
-
-const FormNormalExam = (props: iFormNormalExamProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+const FormNormalExam = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -26,9 +30,14 @@ const FormNormalExam = (props: iFormNormalExamProps) => {
             className='RadioCondition'
             aria-label='dental'
             name='dental'
-            value={props.dental}
-            onChange={(e) => {
-              props.updateDental(e.target.value);
+            value={editedGestation.dental}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  dental: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel control={<Radio />} value='true' label='Yes' />
@@ -43,9 +52,14 @@ const FormNormalExam = (props: iFormNormalExamProps) => {
             className='RadioCondition'
             aria-label='mammary'
             name='mammary'
-            value={props.mammary}
-            onChange={(e) => {
-              props.updateMammary(e.target.value);
+            value={editedGestation?.mammary}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  mammary: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel control={<Radio />} value='true' label='Yes' />

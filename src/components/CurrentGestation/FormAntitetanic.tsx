@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   FormControl,
   TextField,
   RadioGroup,
@@ -9,9 +8,14 @@ import {
   FormLabel,
   Grid,
 } from "@material-ui/core";
-import { antitetanicProps as iFormAntitetanicProps } from "../../interfaces/currentGestations";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
 
-const FormAntitetanic = (props: iFormAntitetanicProps): JSX.Element => {
+const FormAntitetanic = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -29,9 +33,14 @@ const FormAntitetanic = (props: iFormAntitetanicProps): JSX.Element => {
             className='RadioCondition'
             aria-label='socialSec'
             name='plannedPregnancy'
-            value={props.current}
-            onChange={(e) => {
-              props.updateCurrent(e.target.value);
+            value={editedGestation?.current}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  current: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel control={<Radio />} value='true' label='Yes' />
@@ -42,14 +51,19 @@ const FormAntitetanic = (props: iFormAntitetanicProps): JSX.Element => {
           <TextField
             type='number'
             className='FormTextGeneral'
-            id='size'
-            label='Size'
+            id='dose1'
+            label='Dose 1'
             variant='outlined'
             size='small'
-            value={props.dose1}
+            value={editedGestation?.dose1}
             style={{ width: 300 }}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateDose1(parseInt(e.target.value));
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  dose1: parseInt(e.target.value),
+                })
+              );
             }}
           />
         </FormControl>
@@ -57,14 +71,19 @@ const FormAntitetanic = (props: iFormAntitetanicProps): JSX.Element => {
           <TextField
             type='number'
             className='FormTextGeneral'
-            id='previousWeiht'
-            label='Previous Weight'
+            id='dose2'
+            label='Dose 2'
             variant='outlined'
             size='small'
             style={{ width: 300 }}
-            value={props.dose2}
+            value={editedGestation?.dose2}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              props.updateDose2(parseInt(e.target.value));
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  dose2: parseInt(e.target.value),
+                })
+              );
             }}
           />
         </FormControl>

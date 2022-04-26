@@ -1,4 +1,3 @@
-import { groupProps as iFormGroupProps } from "../../interfaces/currentGestations";
 import {
   FormControl,
   Select,
@@ -10,7 +9,13 @@ import {
   FormLabel,
   Grid,
 } from "@material-ui/core";
-const FormGroup = (props: iFormGroupProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+const FormGroup = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -45,9 +50,14 @@ const FormGroup = (props: iFormGroupProps) => {
             className='RadioCondition Group'
             aria-label='group'
             name='group'
-            value={props.group}
-            onChange={(e) => {
-              props.updateGroup(e.target.value);
+            value={editedGestation?.group}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  group: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -70,9 +80,14 @@ const FormGroup = (props: iFormGroupProps) => {
             className='RadioCondition '
             aria-label='antiDGlobulin'
             name='antiDGlobulin'
-            value={props.antiDGlobulin}
-            onChange={(e) => {
-              props.updateAntiDGlobulin(e.target.value);
+            value={editedGestation?.antiDGlobulin}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  antiDGlobulin: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel

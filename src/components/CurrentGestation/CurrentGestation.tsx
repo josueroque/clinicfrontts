@@ -3,7 +3,6 @@ import React, {
   useState,
   useContext,
   useEffect,
-  useCallback,
   useReducer,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,20 +29,12 @@ import FormHemoglobin from "./FormHemoglobin";
 import FormSyphilis from "./FormSyphilis";
 import FormBacteriuria from "./FormBacteriuria";
 import FormBloodGlucose from "./FormBloodGlucose";
+import GestationButtonGroup from "./GestationBottonGroup/GestationButtonGroup";
 
 import requireAuth from "../requireAuth";
 import swal from "sweetalert";
 
 import { PatientsContext } from "../../context/PatientsContext";
-
-import {
-  getCurrentGestationFunction,
-  contextGestation,
-  previousGestation,
-  setCurrentGestationFunction,
-  setPreviousGestationFunction,
-  previousGestationReducer,
-} from "../../context/CurrentsGestationContext";
 
 import { auth } from "../../context/UsersContext";
 
@@ -59,113 +50,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CurrentGestation = (props: any): JSX.Element => {
   const dispatch = useDispatch();
-
-  const [localPreviousGestation, dispatchPrevious] = useReducer(
-    previousGestationReducer,
-    previousGestation
-  );
-
-  // const [previousGestation, setPreviousGestation] = useState<any>({});
-
+  /*   const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  ); */
   const [_id, update_Id] = useState<string>("");
   const [buttonLabel, updateBottonLabel] = useState("Save");
   const [patient, updatePatient] = useState<Patient | null>(null);
-
   const currentGestation = useSelector(
     (state: any) => state?.gestation?.gestation
   );
-
-  const [likelyDeliveryDate, updateLikelyDeliveryDate] = useState<Date | null>(
-    new Date()
-  );
-  const [lastMenstruationDate, updateLastMenstruationDate] =
-    useState<Date | null>(new Date());
-  //const [size, updateSize] = useState<number>(0);
-
-  const [current, updateCurrent] = useState<string>("");
-  const [dose1, updateDose1] = useState<number | null>(0);
-  const [dose2, updateDose2] = useState<number | null>(0);
-  const [dental, updateDental] = useState<string>("");
-  const [mammary, updateMammary] = useState<string>("");
-  const [visualInspection, updateVisualInspection] = useState<string>("");
-  const [papanicolao, updatePapanicolao] = useState<string>("");
-  const [colposcopy, updateColposcopy] = useState<string>("");
-  const [group, updateGroup] = useState<string>("");
-  const [positive, updatePositive] = useState<string>("");
-  const [antiDGlobulin, updateAntiDGlobulin] = useState<string | null>("");
-  const [toxoplasmosisLessThanTwenty, updateToxoplasmosisLessThanTwenty] =
-    useState<string | null>("");
-  const [toxoplasmosisGreaterThanTwenty, updateToxoplasmosisGreaterThanTwenty] =
-    useState<string | null>("");
-  const [toxoplasmosisFirst, updateToxoplasmosisFirst] = useState<
-    string | null
-  >("");
-  const [vihRequestedLessThanTwenty, updateVihRequestedLessThanTwenty] =
-    useState("");
-  const [vihRequestedGreaterThanTwenty, updateVihRequestedGreaterThanTwenty] =
-    useState("");
-  const [vihDoneLessThanTwenty, updateVihDoneLessThanTwenty] = useState("");
-  const [vihDoneGreaterThanTwenty, updateVihDoneGreaterThanTwenty] =
-    useState("");
-  const [hemoglobinlessThanTwenty, updateHemoglobinLessThanTwenty] =
-    useState(0);
-  const [hemoglobinGreaterThanTwenty, updateHemoglobinGreaterThanTwenty] =
-    useState(0);
-  // Syphilis
-  const [syphilisVDRLLessThanTwenty, updateSyphilisVDRLLessThanTwenty] =
-    useState<string>("");
-  const [
-    syphilisVDRLLessThanTwentyWeeks,
-    updateSyphilisVDRLLessThanTwentyWeeks,
-  ] = useState<number | null>(null);
-  const [syphilisVDRLGreaterThanTwenty, updateSyphilisVDRLGreaterThanTwenty] =
-    useState<string>("");
-  const [
-    syphilisVDRLGreaterThanTwentyWeeks,
-    updateSyphilisVDRLGreaterThanTwentyWeeks,
-  ] = useState<number | null>(null);
-  const [syphilisFTALessThanTwenty, updateSyphilisFTALessThanTwenty] =
-    useState<string>("");
-  const [syphilisFTALessThanTwentyWeeks, updateSyphilisFTALessThanTwentyWeeks] =
-    useState<number | null>(null);
-  const [syphilisFTAGreaterThanTwenty, updateSyphilisFTAGreaterThanTwenty] =
-    useState<string>("");
-  const [
-    syphilisFTAGreaterThanTwentyWeeks,
-    updateSyphilisFTAGreaterThanTwentyWeeks,
-  ] = useState<number | null>(null);
-  const [
-    syphilisTreatmentLessThanTwenty,
-    updateSyphilisTreatmentLessThanTwenty,
-  ] = useState<string>("");
-  const [
-    syphilisTreatmentLessThanTwentyWeeks,
-    updateSyphilisTreatmentLessThanTwentyWeeks,
-  ] = useState<number | null>(null);
-  const [
-    syphilisTreatmentGreaterThanTwenty,
-    updateSyphilisTreatmentGreaterThanTwenty,
-  ] = useState<string>("");
-  const [
-    syphilisTreatmentGreaterThanTwentyWeeks,
-    updateSyphilisTreatmentGreaterThanTwentyWeeks,
-  ] = useState<number | null>(null);
-  const [
-    syphilisPartnerTreatmentLessThanTwenty,
-    updateSyphilisPartnerTreatmentLessThanTwenty,
-  ] = useState<string>("");
-  const [
-    syphilisPartnerTreatmentGreaterThanTwenty,
-    updateSyphilisPartnerTreatmentGreaterThanTwenty,
-  ] = useState<string>("");
-  const [bacteriuriaLessThanTwenty, updateBacteriuriaLessThanTwenty] =
-    useState<string>("");
-  const [bacteriuriaGreaterThanTwenty, updateBacteriuriaGreaterThanTwenty] =
-    useState<string>("");
-  const [bloodGlucoseLessThanTwenty, updateBloodGlucoseLessThanTwenty] =
-    useState(0);
-  const [bloodGlucoseGreaterThanTwenty, updateBloodGlucoseGreaterThanTwenty] =
-    useState(0);
 
   const [loading, updateLoading] = useState(false);
   const [errorStatus, updateErrorStatus] = useState(false);
@@ -173,9 +66,6 @@ const CurrentGestation = (props: any): JSX.Element => {
   const [updating, updateUpdating] = useState(false);
 
   const [value, setValue] = React.useState(0);
-
-  const { updatePreviousWeight, updateSize, size, previousWeight } =
-    useFormValues();
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -215,170 +105,34 @@ const CurrentGestation = (props: any): JSX.Element => {
           <FormGeneral />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <FormAntitetanic
-            current={current}
-            dose1={dose1}
-            dose2={dose2}
-            updateCurrent={updateCurrent}
-            updateDose1={updateDose1}
-            updateDose2={updateDose2}
-          />
+          <FormAntitetanic />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <FormNormalExam
-            dental={dental}
-            mammary={mammary}
-            updateDental={updateDental}
-            updateMammary={updateMammary}
-          />
+          <FormNormalExam />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <FormCervix
-            visualInspection={visualInspection}
-            papanicolao={papanicolao}
-            colposcopy={colposcopy}
-            updateVisualInspection={updateVisualInspection}
-            updatePapanicolao={updatePapanicolao}
-            updateColposcopy={updateColposcopy}
-          />
+          <FormCervix />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <FormGroup
-            group={group}
-            positive={positive}
-            antiDGlobulin={antiDGlobulin}
-            updateGroup={updateGroup}
-            updatePositive={updatePositive}
-            updateAntiDGlobulin={updateAntiDGlobulin}
-          />
+          <FormGroup />
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <FormToxoplasmosis
-            toxoplasmosisLessThanTwenty={toxoplasmosisLessThanTwenty}
-            toxoplasmosisGreaterThanTwenty={toxoplasmosisGreaterThanTwenty}
-            toxoplasmosisFirst={toxoplasmosisFirst}
-            updateToxoplasmosisLessThanTwenty={
-              updateToxoplasmosisLessThanTwenty
-            }
-            updateToxoplasmosisGreaterThanTwenty={
-              updateToxoplasmosisGreaterThanTwenty
-            }
-            updateToxoplasmosisFirst={updateToxoplasmosisFirst}
-          />
+          <FormToxoplasmosis />
         </TabPanel>
         <TabPanel value={value} index={6}>
-          <FormVIH
-            vihRequestedLessThanTwenty={vihRequestedLessThanTwenty}
-            vihRequestedGreaterThanTwenty={vihRequestedGreaterThanTwenty}
-            vihDoneLessThanTwenty={vihDoneLessThanTwenty}
-            vihDoneGreaterThanTwenty={vihDoneGreaterThanTwenty}
-            updateVihRequestedLessThanTwenty={updateVihRequestedLessThanTwenty}
-            updateVihRequestedGreaterThanTwenty={
-              updateVihRequestedGreaterThanTwenty
-            }
-            updateVihDoneLessThanTwenty={updateVihDoneLessThanTwenty}
-            updateVihDoneGreaterThanTwenty={updateVihDoneGreaterThanTwenty}
-          />
+          <FormVIH />
         </TabPanel>
         <TabPanel value={value} index={7}>
-          <FormHemoglobin
-            hemoglobinLessThanTwenty={hemoglobinlessThanTwenty}
-            hemoglobinGreaterThanTwenty={hemoglobinGreaterThanTwenty}
-            updateHemoglobinLessThanTwenty={updateHemoglobinLessThanTwenty}
-            updateHemoglobinGreaterThanTwenty={
-              updateHemoglobinGreaterThanTwenty
-            }
-          />
+          <FormHemoglobin />
         </TabPanel>
         <TabPanel value={value} index={8}>
-          <FormSyphilis
-            syphilisVDRLLessThanTwenty={syphilisVDRLLessThanTwenty}
-            syphilisVDRLLessThanTwentyWeeks={syphilisVDRLLessThanTwentyWeeks}
-            syphilisVDRLGreaterThanTwenty={syphilisVDRLGreaterThanTwenty}
-            syphilisVDRLGreaterThanTwentyWeeks={
-              syphilisVDRLGreaterThanTwentyWeeks
-            }
-            syphilisFTALessThanTwenty={syphilisFTALessThanTwenty}
-            syphilisFTALessThanTwentyWeeks={syphilisFTALessThanTwentyWeeks}
-            syphilisFTAGreaterThanTwenty={syphilisFTAGreaterThanTwenty}
-            syphilisFTAGreaterThanTwentyWeeks={
-              syphilisFTAGreaterThanTwentyWeeks
-            }
-            syphilisTreatmentLessThanTwenty={syphilisTreatmentLessThanTwenty}
-            syphilisTreatmentLessThanTwentyWeeks={
-              syphilisTreatmentLessThanTwentyWeeks
-            }
-            syphilisTreatmentGreaterThanTwenty={
-              syphilisTreatmentGreaterThanTwenty
-            }
-            syphilisTreatmentGreaterThanTwentyWeeks={
-              syphilisTreatmentGreaterThanTwentyWeeks
-            }
-            syphilisPartnerTreatmentLessThanTwenty={
-              syphilisPartnerTreatmentLessThanTwenty
-            }
-            syphilisPartnerTreatmentGreaterThanTwenty={
-              syphilisPartnerTreatmentGreaterThanTwenty
-            }
-            updateSyphilisVDRLLessThanTwenty={updateSyphilisVDRLLessThanTwenty}
-            updateSyphilisVDRLLessThanTwentyWeeks={
-              updateSyphilisVDRLLessThanTwentyWeeks
-            }
-            updateSyphilisVDRLGreaterThanTwenty={
-              updateSyphilisVDRLGreaterThanTwenty
-            }
-            updateSyphilisVDRLGreaterThanTwentyWeeks={
-              updateSyphilisVDRLGreaterThanTwentyWeeks
-            }
-            updateSyphilisFTALessThanTwenty={updateSyphilisFTALessThanTwenty}
-            updateSyphilisFTALessThanTwentyWeeks={
-              updateSyphilisFTALessThanTwentyWeeks
-            }
-            updateSyphilisFTAGreaterThanTwenty={
-              updateSyphilisFTAGreaterThanTwenty
-            }
-            updateSyphilisFTAGreaterThanTwentyWeeks={
-              updateSyphilisFTAGreaterThanTwentyWeeks
-            }
-            updateSyphilisTreatmentLessThanTwenty={
-              updateSyphilisTreatmentLessThanTwenty
-            }
-            updateSyphilisTreatmentLessThanTwentyWeeks={
-              updateSyphilisTreatmentLessThanTwentyWeeks
-            }
-            updateSyphilisTreatmentGreaterThanTwenty={
-              updateSyphilisTreatmentGreaterThanTwenty
-            }
-            updateSyphilisTreatmentGreaterThanTwentyWeeks={
-              updateSyphilisTreatmentGreaterThanTwentyWeeks
-            }
-            updateSyphilisPartnerTreatmentLessThanTwenty={
-              updateSyphilisPartnerTreatmentLessThanTwenty
-            }
-            updateSyphilisPartnerTreatmentGreaterThanTwenty={
-              updateSyphilisPartnerTreatmentGreaterThanTwenty
-            }
-          />
+          <FormSyphilis />
         </TabPanel>
         <TabPanel value={value} index={9}>
-          <FormBacteriuria
-            bateriuriaLessThatTwenty={bacteriuriaLessThanTwenty}
-            bacteriuriaGreaterThanTwenty={bacteriuriaGreaterThanTwenty}
-            updateBateriuriaLessThatTwenty={updateBacteriuriaLessThanTwenty}
-            updateBacteriuriaGreaterThanTwenty={
-              updateBacteriuriaGreaterThanTwenty
-            }
-          />
+          <FormBacteriuria />
         </TabPanel>
         <TabPanel value={value} index={10}>
-          <FormBloodGlucose
-            bloodGlucoseLessThanTwenty={bloodGlucoseLessThanTwenty}
-            bloodGlucoseGreaterThanTwenty={bloodGlucoseGreaterThanTwenty}
-            updateBloodGlucoseLessThanTwenty={updateBloodGlucoseLessThanTwenty}
-            updateBloodGlucoseGreaterThanTwenty={
-              updateBloodGlucoseGreaterThanTwenty
-            }
-          />
+          <FormBloodGlucose />
         </TabPanel>
       </div>
     );
@@ -389,37 +143,6 @@ const CurrentGestation = (props: any): JSX.Element => {
     updateCurrentGestationFunction,
     saveCurrentGestationFunction,
   } = useContext(PatientsContext);
-
-  const wait = async (ms: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  };
-
-  const saveCurrentGestation = async (gestation: any) => {
-    try {
-      updateLoading(true);
-      updateErrorStatus(true);
-      updateSavedStatus(false);
-      await wait(1000);
-      updateLoading(false);
-      updateSavedStatus(true);
-      let response;
-      if (contextGestation) {
-        response = await updateCurrentGestationFunction(gestation);
-      } else response = await saveCurrentGestationFunction(gestation);
-
-      if (response.statusText === "OK") {
-        updateErrorStatus(false);
-      }
-      await wait(1000);
-      swal("Changes has been saved!", "", "success");
-    } catch (error: any) {
-      swal("Something has failed!", error.toString(), "error");
-      updateSavedStatus(true);
-      updateErrorStatus(true);
-    }
-  };
 
   useEffect(() => {
     if (props.match?.params?.id) {
@@ -477,13 +200,6 @@ const CurrentGestation = (props: any): JSX.Element => {
     };
   }
 
-  const toBoolean = (value: string | null): boolean | null | undefined => {
-    if (value === "" || value === null) return null;
-    if (value.toUpperCase() === "true") return true;
-    if (value.toLowerCase() === "false") return false;
-    return undefined;
-  };
-
   return (
     <Fragment>
       <Sidebar></Sidebar>
@@ -496,102 +212,21 @@ const CurrentGestation = (props: any): JSX.Element => {
           key='mainForm'
           noValidate
           autoComplete='off'
-          onSubmit={(e) => {
+          /*           onSubmit={(e) => {
             e.preventDefault();
-            let gestation = {
-              _id: patient?._id,
-              idNumber: patient?.idNumber,
-              lastMenstruationDate,
-              size,
-              previousWeight,
-              current,
-              dose1,
-              dose2,
-              dental: toBoolean(dental),
-              mammary: toBoolean(mammary),
-              visualInspection: toBoolean(visualInspection),
-              papanicolao: toBoolean(papanicolao),
-              colposcopy: toBoolean(colposcopy),
-              group,
-              positive: toBoolean(positive),
-              antiDGlobulin,
-              toxoplasmosisLessThanTwenty: toBoolean(
-                toxoplasmosisLessThanTwenty
-              ),
-              toxoplasmosisGreaterThanTwenty: toBoolean(
-                toxoplasmosisGreaterThanTwenty
-              ),
-              toxoplasmosisFirst: toBoolean(toxoplasmosisFirst),
-              vihRequestedLessThanTwenty: toBoolean(vihRequestedLessThanTwenty),
-              vihRequestedGreaterThanTwenty: toBoolean(
-                vihRequestedGreaterThanTwenty
-              ),
-              vihDoneLessThanTwenty: toBoolean(vihDoneLessThanTwenty),
-              vihDoneGreaterThanTwenty: toBoolean(vihDoneGreaterThanTwenty),
-              hemoglobinlessThanTwenty,
-              hemoglobinGreaterThanTwenty,
-              syphilisVDRLLessThanTwenty: toBoolean(syphilisVDRLLessThanTwenty),
-              syphilisVDRLLessThanTwentyWeeks,
-              syphilisVDRLGreaterThanTwenty: toBoolean(
-                syphilisVDRLGreaterThanTwenty
-              ),
-              syphilisVDRLGreaterThanTwentyWeeks,
-              syphilisFTALessThanTwenty: toBoolean(syphilisFTALessThanTwenty),
-              syphilisFTALessThanTwentyWeeks,
-              syphilisFTAGreaterThanTwenty: toBoolean(
-                syphilisFTAGreaterThanTwenty
-              ),
-              syphilisFTAGreaterThanTwentyWeeks,
-              syphilisTreatmentLessThanTwenty: toBoolean(
-                syphilisTreatmentLessThanTwenty
-              ),
-              syphilisTreatmentLessThanTwentyWeeks,
-              syphilisTreatmentGreaterThanTwenty: toBoolean(
-                syphilisTreatmentGreaterThanTwenty
-              ),
-              syphilisTreatmentGreaterThanTwentyWeeks,
-              syphilisPartnerTreatmentLessThanTwenty: toBoolean(
-                syphilisPartnerTreatmentLessThanTwenty
-              ),
-              syphilisPartnerTreatmentGreaterThanTwenty: toBoolean(
-                syphilisPartnerTreatmentGreaterThanTwenty
-              ),
-              bacteriuriaLessThanTwenty: toBoolean(bacteriuriaLessThanTwenty),
-              bacteriuriaGreaterThanTwenty: toBoolean(
-                bacteriuriaGreaterThanTwenty
-              ),
-              bloodGlucoseLessThanTwenty,
-              bloodGlucoseGreaterThanTwenty,
-            };
-
-            saveCurrentGestation(gestation);
-          }}
+          }} */
         >
           <div style={{ marginTop: "20vh !important" }}>
             <ScrollableTabsButtonAuto key='ScrollableTabsButtonAutoForm' />
           </div>
           <Grid container justify='center' className='Button-Container'>
-            <ButtonGroup>
-              <Link to={{ pathname: `/general/` + _id }} className='Link'>
-                <Button
-                  className='HistoryButton'
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  History
-                </Button>
-              </Link>
-              <Button
-                className='HistoryButton'
-                type='submit'
-                variant='contained'
-                color='primary'
-                onClick={saveCurrentGestation}
-              >
-                {buttonLabel}
-              </Button>
-            </ButtonGroup>
+            <GestationButtonGroup
+              updateLoading={updateLoading}
+              updateErrorStatus={updateErrorStatus}
+              updateSavedStatus={updateSavedStatus}
+              _id={_id}
+              buttonLabel={buttonLabel}
+            ></GestationButtonGroup>
           </Grid>
         </form>
       </div>

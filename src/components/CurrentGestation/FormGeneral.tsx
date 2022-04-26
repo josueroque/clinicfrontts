@@ -5,7 +5,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { formGeneralProps as iFormGeneralProps } from "../../interfaces/currentGestations";
+
 import { setEditedGestation } from "../../store/actions/gestation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -69,7 +69,7 @@ const PreviousWeight = () => {
   );
 };
 
-const FormGeneral = (props: iFormGeneralProps) => {
+const FormGeneral = () => {
   const dispatch = useDispatch();
   const editedGestation = useSelector(
     (state: any) => state?.gestation?.editedGestation

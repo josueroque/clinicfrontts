@@ -1,5 +1,4 @@
 import React from "react";
-import { toxoplasmosisProps as iToxoplasmosisProps } from "../../interfaces/currentGestations";
 import {
   Grid,
   FormControl,
@@ -8,8 +7,14 @@ import {
   FormControlLabel,
   FormLabel,
 } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
 
-const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
+const FormToxoplasmosis = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <div>
       <Grid
@@ -25,9 +30,14 @@ const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
             className='RadioCondition '
             aria-label='toxoplasmosisLessThanTwenty'
             name='toxoplasmosisLessThanTwenty'
-            value={props.toxoplasmosisLessThanTwenty}
-            onChange={(e) => {
-              props.updateToxoplasmosisLessThanTwenty(e.target.value);
+            value={editedGestation?.toxoplasmosisLessThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  toxoplasmosisLessThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -59,9 +69,14 @@ const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
             className='RadioCondition'
             aria-label='toxoplasmosisGreaterThanTwenty'
             name='toxoplasmosisGreaterThanTwenty'
-            value={props.toxoplasmosisGreaterThanTwenty}
-            onChange={(e) => {
-              props.updateToxoplasmosisGreaterThanTwenty(e.target.value);
+            value={editedGestation?.toxoplasmosisGreaterThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  toxoplasmosisGreaterThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -91,9 +106,14 @@ const FormToxoplasmosis = (props: iToxoplasmosisProps) => {
             className='RadioCondition'
             aria-label='toxoplasmosisFirst'
             name='toxoplasmosisFirst'
-            value={props.toxoplasmosisFirst}
-            onChange={(e) => {
-              props.updateToxoplasmosisFirst(e.target.value);
+            value={editedGestation?.toxoplasmosisFirst}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  toxoplasmosisFirst: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel

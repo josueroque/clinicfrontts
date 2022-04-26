@@ -1,5 +1,4 @@
 import React from "react";
-import { bateriuriaProps as iBacteriuriaProps } from "../../interfaces/currentGestations";
 import {
   FormControl,
   RadioGroup,
@@ -8,8 +7,13 @@ import {
   FormLabel,
   Grid,
 } from "@material-ui/core";
-
-const FormToxoplasmosis = (props: iBacteriuriaProps) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setEditedGestation } from "../../store/actions/gestation";
+const FormToxoplasmosis = () => {
+  const dispatch = useDispatch();
+  const editedGestation = useSelector(
+    (state: any) => state?.gestation?.editedGestation
+  );
   return (
     <>
       <Grid
@@ -24,11 +28,16 @@ const FormToxoplasmosis = (props: iBacteriuriaProps) => {
           <FormLabel component='legend'>Less than 20 weeks</FormLabel>
           <RadioGroup
             className='RadioCondition '
-            aria-label='toxoplasmosisLessThanTwenty'
-            name='toxoplasmosisLessThanTwenty'
-            value={props.bateriuriaLessThatTwenty}
-            onChange={(e) => {
-              props.updateBateriuriaLessThatTwenty(e.target.value);
+            aria-label='bateriuriaLessThatTwenty'
+            name='bateriuriaLessThatTwenty'
+            value={editedGestation?.bateriuriaLessThatTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  bateriuriaLessThatTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
@@ -58,11 +67,16 @@ const FormToxoplasmosis = (props: iBacteriuriaProps) => {
           </FormLabel>
           <RadioGroup
             className='RadioCondition'
-            aria-label='toxoplasmosisGreaterThanTwenty'
-            name='toxoplasmosisGreaterThanTwenty'
-            value={props.bacteriuriaGreaterThanTwenty}
-            onChange={(e) => {
-              props.updateBacteriuriaGreaterThanTwenty(e.target.value);
+            aria-label='bacteriuriaGreaterThanTwenty'
+            name='bacteriuriaGreaterThanTwenty'
+            value={editedGestation?.bacteriuriaGreaterThanTwenty}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(
+                setEditedGestation({
+                  ...editedGestation,
+                  bacteriuriaGreaterThanTwenty: e.target.value,
+                })
+              );
             }}
           >
             <FormControlLabel
